@@ -9,7 +9,7 @@
 }
 
 .header {
-	background-color: oklch(var(--b3));
+	background-color: oklch(var(--b2));
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;

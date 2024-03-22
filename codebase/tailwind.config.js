@@ -24,6 +24,9 @@ module.exports = {
 		},
 	},
 	plugins: [require("daisyui"), addVariablesForColors],
+	daisyui: {
+		themes: ["light", "dark", "synthwave", "coffee", "winter", "sunset"],
+	},
 };
 
 function addVariablesForColors({ addBase, theme }) {
