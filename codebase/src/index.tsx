@@ -4,8 +4,16 @@ import { render } from "solid-js/web";
 import "./index.css";
 import App from "./App";
 import { Route, Router } from "@solidjs/router";
+import { ThemeProvider, createTheme } from "@suid/material";
+import Home from "./pages/Home";
 
 const root = document.getElementById("root");
+
+const darkTheme = createTheme({
+	palette: {
+		mode: "dark",
+	},
+});
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 	throw new Error(
@@ -15,9 +23,12 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 
 render(
 	() => (
-		<Router>
-			<Route path="/" component={App} />
-		</Router>
+		<ThemeProvider theme={darkTheme}>
+			<Router>
+				<Route path="/" component={App} />
+				<Route path="/home" component={Home} />
+			</Router>
+		</ThemeProvider>
 	),
 	root!
 );

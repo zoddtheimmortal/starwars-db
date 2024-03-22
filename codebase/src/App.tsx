@@ -1,6 +1,6 @@
 import { createEffect, createResource, type Component } from "solid-js";
 
-import styles from "./App.module.css";
+import styles from "./style.module.css";
 import Nav from "./components/main_nav";
 import BasicModal from "./components/login_modal";
 
@@ -15,11 +15,11 @@ const App: Component = () => {
 							<h1 class="text-6xl font-bold">
 								<code>starwars-db</code>
 							</h1>
-							<p class="py-6">
-								Provident cupiditate voluptatem et in. Quaerat
-								fugiat ut assumenda excepturi exercitationem
-								quasi. In deleniti eaque aut repudiandae et a id
-								nisi.
+							<p class="pt-2">
+								Star Wars Galactic Management System.{" "}
+							</p>
+							<p class="pb-6">
+								A deep dive into the Star Wars Universe.
 							</p>
 							<BasicModal />
 						</div>
