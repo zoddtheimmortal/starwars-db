@@ -26,7 +26,7 @@ const Home: Component<{}> = (props) => {
 						</svg>
 					</label>
 				</div>
-				<div class="grid grid-cols-1 sm:grid-cols-3 mx-6 gap-x-3 gap-y-6">
+				<div class="grid grid-cols-1 sm:grid-cols-3 mx-6 gap-x-4 gap-y-6">
 					<Card title="Characters" src={Links.people}>
 						<div>
 							Star Wars brims with heroes and villains. Jedi
@@ -44,7 +44,7 @@ const Home: Component<{}> = (props) => {
 							tyranny, while bounty hunters chase credits.
 						</div>
 					</Card>
-					<Card title="Factions" src={Links.starship}>
+					<Card title="Starships" src={Links.starship}>
 						<div>
 							In Star Wars, starships zoom through space, each
 							with a purpose. Rebel X-wings zip through dogfights,
@@ -53,6 +53,58 @@ const Home: Component<{}> = (props) => {
 							freighter, bursts with personality. Even medical
 							frigates and droid carriers play vital roles in the
 							galactic drama.
+						</div>
+					</Card>
+					<Card title="Duels" src={Links.duels}>
+						<div>
+							Star Wars ignites with lightsaber clashes! Jedi,
+							fueled by the Force, duel Sith shrouded in darkness.
+							Heroes like Luke Skywalker face villains like Darth
+							Vader in epic battles that decide the fate of the
+							galaxy.
+						</div>
+					</Card>
+					<Card title="Weapons" src={Links.weapons}>
+						<div>
+							Star Wars explodes with iconic weaponry! Jedi wield
+							elegant lightsabers, humming with energy. Blasters
+							of all shapes and sizes fill battlefields, from
+							stormtrooper rifles to Han Solo's trusty blaster
+							pistol. The dark side utilizes Force lightning and
+							crushing telekinesis. Even lightsabers clash in
+							dazzling displays of power, shaping the destiny of
+							the galaxy.
+						</div>
+					</Card>
+					<Card title="Species" src={Links.species}>
+						<div>
+							Star Wars teems with diverse species! Wise Yoda
+							leads the diminutive Jedi, while hulking Wookiees
+							roar in battle. Regal Mon Calamari command fleets,
+							and cunning Twi'leks navigate galactic politics.
+						</div>
+					</Card>
+					<Card title="Planets" src={Links.planets}>
+						<div>
+							Star Wars sprawls across vibrant planets! Desert
+							suns scorch Tatooine, while icy Hoth chills to the
+							bone. Lush forests cloak Endor, hiding Ewoks.
+							Coruscant, a glittering cityscape, pulsates as the
+							galactic capital. From volcanic Mustafar to
+							cloud-covered Bespin, each planet offers unique
+							landscapes and cultures, shaping the destinies of
+							heroes and villains.
+						</div>
+					</Card>
+					<Card title="Droids" src={Links.droids}>
+						<div>
+							Star Wars whirls with loyal droids! Protocol droids
+							like C-3PO navigate etiquette, while astromech
+							droids like R2-D2 zip around fixing starships.
+							Bounty hunters employ deadly droids, and even
+							empires rely on droid armies. From quirky
+							personalities to unwavering service, these
+							mechanical companions fuel the galactic saga.
 						</div>
 					</Card>
 				</div>
