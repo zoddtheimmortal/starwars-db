@@ -22,6 +22,8 @@ const species =
 const droids =
 	"https://r4.wallpaperflare.com/wallpaper/539/405/176/star-wars-clone-trooper-video-games-star-wars-republic-commando-wallpaper-e2cb1aa5426ee9528d66e846d106fd6b.jpg";
 
+const repo = "https://github.com/zoddtheimmortal/starwars-db";
+
 const Links = {
 	people,
 	faction,
@@ -31,6 +33,7 @@ const Links = {
 	planets,
 	species,
 	droids,
+	repo,
 };
 
 export default Links;

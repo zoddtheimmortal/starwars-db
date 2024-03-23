@@ -1,13 +1,11 @@
 import { Component } from "solid-js";
-import Nav from "../components/main_nav";
 import styles from "../style.module.css";
 import Card from "../components/ui/card";
-import Links from "../assets/images.service";
+import Links from "../assets/links.service";
 
 const Home: Component<{}> = (props) => {
 	return (
 		<>
-			<Nav />
 			<div class={styles.App}>
 				<div class="m-6">
 					<label class="input input-bordered bg-base-300 flex items-center gap-2">
@@ -50,9 +48,7 @@ const Home: Component<{}> = (props) => {
 							with a purpose. Rebel X-wings zip through dogfights,
 							while Imperial Star Destroyers dominate
 							battlefields. Millennium Falcon, a smuggler's
-							freighter, bursts with personality. Even medical
-							frigates and droid carriers play vital roles in the
-							galactic drama.
+							freighter, bursts with personality.
 						</div>
 					</Card>
 					<Card title="Duels" src={Links.duels}>
@@ -71,9 +67,7 @@ const Home: Component<{}> = (props) => {
 							of all shapes and sizes fill battlefields, from
 							stormtrooper rifles to Han Solo's trusty blaster
 							pistol. The dark side utilizes Force lightning and
-							crushing telekinesis. Even lightsabers clash in
-							dazzling displays of power, shaping the destiny of
-							the galaxy.
+							crushing telekinesis.
 						</div>
 					</Card>
 					<Card title="Species" src={Links.species}>
@@ -90,10 +84,7 @@ const Home: Component<{}> = (props) => {
 							suns scorch Tatooine, while icy Hoth chills to the
 							bone. Lush forests cloak Endor, hiding Ewoks.
 							Coruscant, a glittering cityscape, pulsates as the
-							galactic capital. From volcanic Mustafar to
-							cloud-covered Bespin, each planet offers unique
-							landscapes and cultures, shaping the destinies of
-							heroes and villains.
+							galactic capital.
 						</div>
 					</Card>
 					<Card title="Droids" src={Links.droids}>
@@ -102,9 +93,7 @@ const Home: Component<{}> = (props) => {
 							like C-3PO navigate etiquette, while astromech
 							droids like R2-D2 zip around fixing starships.
 							Bounty hunters employ deadly droids, and even
-							empires rely on droid armies. From quirky
-							personalities to unwavering service, these
-							mechanical companions fuel the galactic saga.
+							empires rely on droid armies.
 						</div>
 					</Card>
 				</div>

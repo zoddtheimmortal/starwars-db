@@ -6,6 +6,8 @@ import App from "./App";
 import { Route, Router } from "@solidjs/router";
 import { ThemeProvider, createTheme } from "@suid/material";
 import Home from "./pages/Home";
+import Base from "./pages/Base";
+import Characters from "./pages/Characters";
 
 const root = document.getElementById("root");
 
@@ -24,9 +26,10 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 render(
 	() => (
 		<ThemeProvider theme={darkTheme}>
-			<Router>
+			<Router root={Base}>
 				<Route path="/" component={App} />
 				<Route path="/home" component={Home} />
+				<Route path="/characters" component={Characters} />
 			</Router>
 		</ThemeProvider>
 	),

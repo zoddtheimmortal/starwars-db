@@ -24,10 +24,14 @@ export default function BasicModal() {
 		const { data, error } = await supabase.auth.signInWithOtp({
 			email: email,
 			options: {
-				shouldCreateUser: false,
+				shouldCreateUser: true,
 				emailRedirectTo: `${window.location.origin}/home`,
 			},
 		});
+		if (error) {
+			console.log(error);
+			document.getElementById("my_modal_2")?.showModal();
+		}
 	};
 
 	return (
@@ -54,11 +58,7 @@ export default function BasicModal() {
 						p: 4,
 					}}
 				>
-					<Typography
-						id="modal-modal-title"
-						variant="h6"
-						component="h2"
-					>
+					<Typography id="modal-modal-title" component="h2">
 						<div class="font-bold">Login</div>
 					</Typography>
 					<Typography id="modal-modal-description" sx={{ mt: 2 }}>
@@ -67,6 +67,21 @@ export default function BasicModal() {
 								class="btn btn-primary"
 								onClick={handleSignInWithGoogle}
 							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									class="lucide lucide-badge-check"
+								>
+									<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
+									<path d="m9 12 2 2 4-4" />
+								</svg>
 								Login with Google
 							</button>
 						</div>
@@ -97,6 +112,18 @@ export default function BasicModal() {
 								</button>
 							</div>
 						</form>
+						<dialog id="my_modal_2" class="modal modal-bottom">
+							<div class="modal-box">
+								<div>
+									<span>
+										Invalid email address, please try again.
+									</span>
+								</div>
+							</div>
+							<form method="dialog" class="modal-backdrop">
+								<button>close</button>
+							</form>
+						</dialog>
 					</Typography>
 				</Box>
 			</Modal>

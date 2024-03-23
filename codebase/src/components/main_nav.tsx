@@ -63,9 +63,7 @@ const Nav: Component<{}> = (props) => {
 						/>
 					</svg>
 				</button>
-				<button class="btn btn-ghost btn-circle">
-					<Theme_Button />
-				</button>
+				<Theme_Button />
 			</div>
 		</div>
 	);
