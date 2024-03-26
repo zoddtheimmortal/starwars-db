@@ -93,26 +93,11 @@ export type Database = {
 					duel_timestamp?: string;
 					weapon_modelno?: string;
 				};
-				Relationships: [
-					{
-						foreignKeyName: "public_duel_weapon_duel_timestamp_fkey";
-						columns: ["duel_timestamp"];
-						isOneToOne: false;
-						referencedRelation: "duels";
-						referencedColumns: ["Timestamp"];
-					},
-					{
-						foreignKeyName: "public_duel_weapon_weapon_modelno_fkey";
-						columns: ["weapon_modelno"];
-						isOneToOne: false;
-						referencedRelation: "weapon";
-						referencedColumns: ["model_no"];
-					}
-				];
+				Relationships: [];
 			};
 			duels: {
 				Row: {
-					Battleground: string | null;
+					Battleground: string;
 					Duration: number | null;
 					Loser: string;
 					No_of_duels: number | null;
@@ -120,7 +105,7 @@ export type Database = {
 					Winner: string;
 				};
 				Insert: {
-					Battleground?: string | null;
+					Battleground: string;
 					Duration?: number | null;
 					Loser: string;
 					No_of_duels?: number | null;
@@ -128,14 +113,22 @@ export type Database = {
 					Winner: string;
 				};
 				Update: {
-					Battleground?: string | null;
+					Battleground?: string;
 					Duration?: number | null;
 					Loser?: string;
 					No_of_duels?: number | null;
 					Timestamp?: string;
 					Winner?: string;
 				};
-				Relationships: [];
+				Relationships: [
+					{
+						foreignKeyName: "public_duels_Battleground_fkey";
+						columns: ["Battleground"];
+						isOneToOne: false;
+						referencedRelation: "planet";
+						referencedColumns: ["name"];
+					}
+				];
 			};
 			faction: {
 				Row: {
@@ -143,7 +136,7 @@ export type Database = {
 					base_planet: string | null;
 					doi: string;
 					droid_count: number | null;
-					leader: number | null;
+					leader: string | null;
 					name: string;
 					weapon_count: number | null;
 				};
@@ -152,7 +145,7 @@ export type Database = {
 					base_planet?: string | null;
 					doi: string;
 					droid_count?: number | null;
-					leader?: number | null;
+					leader?: string | null;
 					name: string;
 					weapon_count?: number | null;
 				};
@@ -161,7 +154,7 @@ export type Database = {
 					base_planet?: string | null;
 					doi?: string;
 					droid_count?: number | null;
-					leader?: number | null;
+					leader?: string | null;
 					name?: string;
 					weapon_count?: number | null;
 				};
@@ -172,13 +165,6 @@ export type Database = {
 						isOneToOne: false;
 						referencedRelation: "planet";
 						referencedColumns: ["name"];
-					},
-					{
-						foreignKeyName: "public_faction_leader_fkey";
-						columns: ["leader"];
-						isOneToOne: false;
-						referencedRelation: "people";
-						referencedColumns: ["pin"];
 					}
 				];
 			};
@@ -186,9 +172,11 @@ export type Database = {
 				Row: {
 					birth_planet: string | null;
 					birth_year: number | null;
+					description: string | null;
 					faction: string | null;
 					gender: string | null;
 					height: number | null;
+					image: string | null;
 					name: string;
 					personality: string | null;
 					pin: number;
@@ -198,9 +186,11 @@ export type Database = {
 				Insert: {
 					birth_planet?: string | null;
 					birth_year?: number | null;
+					description?: string | null;
 					faction?: string | null;
 					gender?: string | null;
 					height?: number | null;
+					image?: string | null;
 					name: string;
 					personality?: string | null;
 					pin: number;
@@ -210,9 +200,11 @@ export type Database = {
 				Update: {
 					birth_planet?: string | null;
 					birth_year?: number | null;
+					description?: string | null;
 					faction?: string | null;
 					gender?: string | null;
 					height?: number | null;
+					image?: string | null;
 					name?: string;
 					personality?: string | null;
 					pin?: number;
@@ -238,7 +230,7 @@ export type Database = {
 						foreignKeyName: "public_people_species_fkey";
 						columns: ["species"];
 						isOneToOne: false;
-						referencedRelation: "faction";
+						referencedRelation: "species";
 						referencedColumns: ["name"];
 					}
 				];
@@ -350,7 +342,7 @@ export type Database = {
 					Fuel_type: string | null;
 					Manufacturer: string | null;
 					Max_speed: number | null;
-					Name: string | null;
+					name: string | null;
 					Owned_by: string | null;
 					Payload: string | null;
 					Price: number | null;
@@ -362,7 +354,7 @@ export type Database = {
 					Fuel_type?: string | null;
 					Manufacturer?: string | null;
 					Max_speed?: number | null;
-					Name?: string | null;
+					name?: string | null;
 					Owned_by?: string | null;
 					Payload?: string | null;
 					Price?: number | null;
@@ -374,7 +366,7 @@ export type Database = {
 					Fuel_type?: string | null;
 					Manufacturer?: string | null;
 					Max_speed?: number | null;
-					Name?: string | null;
+					name?: string | null;
 					Owned_by?: string | null;
 					Payload?: string | null;
 					Price?: number | null;
@@ -411,31 +403,24 @@ export type Database = {
 			};
 			weapon_people: {
 				Row: {
-					pin: number;
-					weapon_modelno: string;
+					person_pin: number;
+					weapon_model: string;
 				};
 				Insert: {
-					pin: number;
-					weapon_modelno: string;
+					person_pin: number;
+					weapon_model: string;
 				};
 				Update: {
-					pin?: number;
-					weapon_modelno?: string;
+					person_pin?: number;
+					weapon_model?: string;
 				};
 				Relationships: [
 					{
-						foreignKeyName: "public_weapon_people_pin_fkey";
-						columns: ["pin"];
+						foreignKeyName: "fk_weapon";
+						columns: ["person_pin"];
 						isOneToOne: false;
 						referencedRelation: "people";
 						referencedColumns: ["pin"];
-					},
-					{
-						foreignKeyName: "public_weapon_people_weapon_modelno_fkey";
-						columns: ["weapon_modelno"];
-						isOneToOne: false;
-						referencedRelation: "weapon";
-						referencedColumns: ["model_no"];
 					}
 				];
 			};

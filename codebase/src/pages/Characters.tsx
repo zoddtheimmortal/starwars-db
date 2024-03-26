@@ -11,13 +11,12 @@ async function getCharacters() {
 }
 
 const PeopleCard: Component<{ ppl: any }> = (props) => {
-	const image: string =
-		Links[`${props.ppl.faction.toLowerCase().split(" ").join("_")}`];
+	const image: string = props.ppl.image;
 	return (
 		<div>
 			<div class="card w-84 h-96 bg-base-100 shadow-xl image-full bg-contain">
 				<figure>
-					<img src={image} alt={props.ppl.name} class="p-12" />
+					<img src={image} alt={props.ppl.name} class="" />
 				</figure>
 				<div class="card-body">
 					<h2 class="card-title font-bold text-3xl">
