@@ -98,7 +98,7 @@ const Characters: Component<{}> = (props) => {
 						</li>
 					</ul>
 				</div>
-				<div class="mx-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+				<div class="mx-3 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 					<For each={people()}>
 						{(ppl) => <PeopleCard ppl={ppl} />}
 					</For>

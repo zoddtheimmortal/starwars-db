@@ -9,7 +9,7 @@ const Home: Component<{}> = (props) => {
 		<>
 			<div class={styles.App}>
 				<Search />
-				<div class="grid grid-cols-1 sm:grid-cols-3 mx-6 gap-x-4 gap-y-6">
+				<div class="grid grid-cols-1 sm:grid-cols-3 mx-6 gap-x-4 gap-y-6 mb-6">
 					<Card title="Characters" src={Links.people}>
 						<div>
 							Star Wars brims with heroes and villains. Jedi
