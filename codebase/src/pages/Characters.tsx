@@ -1,8 +1,13 @@
-import { Component, For, createEffect, createResource } from "solid-js";
+import {
+	Component,
+	For,
+	createEffect,
+	createResource,
+	createSignal,
+} from "solid-js";
 import { supabase } from "../utils/supabase";
 import styles from "../style.module.css";
 import Search from "../components/ui/search";
-import Links from "../assets/links.service";
 import { A, useNavigate } from "@solidjs/router";
 
 async function getCharacters() {
@@ -29,14 +34,12 @@ const PeopleCard: Component<{ ppl: any }> = (props) => {
 						<div>Birth Planet: {props.ppl.birth_planet}</div>
 					</code>
 					<div class="card-actions justify-end mt-1">
-						<a
+						<A
+							href={`/character/${props.ppl.pin}`}
 							class="btn btn-primary"
-							href={`https://starwars.fandom.com/wiki/${props.ppl.name
-								.split(" ")
-								.join("_")}`}
 						>
 							Know More
-						</a>
+						</A>
 					</div>
 				</div>
 			</div>

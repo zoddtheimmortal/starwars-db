@@ -3,7 +3,7 @@ import Links from "../../assets/links.service";
 
 const Footer: Component<{}> = (props) => {
 	return (
-		<div class="mt-16">
+		<div class="">
 			<footer class="footer items-center p-4 bg-neutral text-neutral-content">
 				<aside class="items-center grid-flow-col">
 					<svg

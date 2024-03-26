@@ -8,6 +8,7 @@ import { ThemeProvider, createTheme } from "@suid/material";
 import Home from "./pages/Home";
 import Base from "./pages/Base";
 import Characters from "./pages/Characters";
+import Character from "./pages/Character";
 
 const root = document.getElementById("root");
 
@@ -30,6 +31,7 @@ render(
 				<Route path="/" component={App} />
 				<Route path="/home" component={Home} />
 				<Route path="/characters" component={Characters} />
+				<Route path="/character/:id" component={Character} />
 			</Router>
 		</ThemeProvider>
 	),
