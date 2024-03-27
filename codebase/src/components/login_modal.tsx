@@ -29,8 +29,10 @@ export default function BasicModal() {
 			},
 		});
 		if (error) {
-			console.log(error);
+			console.error(error);
 			document.getElementById("my_modal_2")?.showModal();
+		} else {
+			document.getElementById("my_modal_3")?.showModal();
 		}
 	};
 
@@ -117,6 +119,18 @@ export default function BasicModal() {
 								<div>
 									<span>
 										Invalid email address, please try again.
+									</span>
+								</div>
+							</div>
+							<form method="dialog" class="modal-backdrop">
+								<button>close</button>
+							</form>
+						</dialog>
+						<dialog id="my_modal_3" class="modal modal-bottom">
+							<div class="modal-box">
+								<div>
+									<span>
+										Email Sent! Please check your inbox.
 									</span>
 								</div>
 							</div>
