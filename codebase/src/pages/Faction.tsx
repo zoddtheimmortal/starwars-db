@@ -14,13 +14,13 @@ const getUserWithId = async (id: string) => {
 	const { data: people, error } = await supabase
 		.from("faction")
 		.select()
-		.eq("pin", id);
+		.eq("name", id);
 	return faction[0];
 };
 
 const Character: Component<{}> = (props) => {
 	const params = useParams();
-	const [people] = createResource(() => getUserWithId(params.id));
+	const [faction] = createResource(() => getUserWithId(params.id));
 
 	createEffect(() => {
 		console.log(faction());
@@ -96,7 +96,7 @@ const Character: Component<{}> = (props) => {
 									<div class="divider divider-horizontal" />
 									<div class="grid flex-grow">
 										<div class="text-pretty my-24 text-left">
-											{people()?.description}
+											{faction()?.description}
 										</div>
 									</div>
 								</div>
