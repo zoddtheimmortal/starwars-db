@@ -10,12 +10,14 @@ import Search from "../components/ui/search";
 import { useNavigate } from "@solidjs/router";
 
 async function getFactions() {
-  let { data: factions, error } = await supabase.from("faction").select();
+  let { data: factions, error } = await supabase.from("factions").select();
   return factions;
 }
 
 const FactionCard: Component<{ fct: any }> = (props) => {
   const { fct } = props;
+  const nav = useNavigate();
+
   return (
     <div>
       <div className={`card w-84 h-96 bg-base-100 shadow-xl image-full bg-contain ${styles.card}`}>
@@ -33,7 +35,7 @@ const FactionCard: Component<{ fct: any }> = (props) => {
             <div>Weapon Count: {fct.weapon_count}</div>
           </code>
           <div className="card-actions justify-end mt-1">
-            <button onClick={() => props.nav(`/faction/${fct.name}`)} className="btn btn-primary">
+            <button onClick={() => nav(`/faction/${fct.name}`)} className="btn btn-primary">
               Know More
             </button>
           </div>
@@ -73,7 +75,7 @@ const Factions: Component<{}> = (props) => {
         </div>
         <div className="mx-3 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <For each={faction()}>
-            {(fct) => <FactionCard fct={fct} nav={nav} />}
+            {(fct) => <FactionCard fct={fct} />}
           </For>
         </div>
       </div>
