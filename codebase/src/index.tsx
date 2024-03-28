@@ -9,6 +9,8 @@ import Home from "./pages/Home";
 import Base from "./pages/Base";
 import Characters from "./pages/Characters";
 import Character from "./pages/Character";
+import Factions from "./pages/Factions";
+import Faction from "./pages/Faction";
 
 const root = document.getElementById("root");
 
@@ -32,6 +34,8 @@ render(
 				<Route path="/home" component={Home} />
 				<Route path="/characters" component={Characters} />
 				<Route path="/character/:id" component={Character} />
+				<Route path="/factions" component={Factions} />
+				<Route path="/factions/:name" component={Faction} />
 			</Router>
 		</ThemeProvider>
 	),

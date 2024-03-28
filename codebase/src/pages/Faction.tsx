@@ -7,20 +7,20 @@ import {
 } from "solid-js";
 import { supabase } from "../utils/supabase";
 import styles from "../style.module.css";
-import Search from "../components/ui/search";
-import { Skeleton } from "@suid/material";
 
-const getUserWithId = async (id: string) => {
+const getUserWithId = async (name: string) => {
 	const { data: faction, error } = await supabase
 		.from("faction")
 		.select()
-		.eq("name", id);
+		.eq("name", name);
 	return faction[0];
 };
 
-const Character: Component<{}> = (props) => {
+const Faction: Component<{}> = (props) => {
 	const params = useParams();
-	const [faction] = createResource(() => getUserWithId(params.id));
+	const [faction] = createResource(() =>
+		getUserWithId(params.name.split("%20").join(" "))
+	);
 
 	createEffect(() => {
 		console.log(faction());
@@ -32,7 +32,7 @@ const Character: Component<{}> = (props) => {
 				{faction() ? (
 					<div
 						class="hero min-h-screen"
-						style={`background-image: url(${faction().image});`}
+						style={`background-image: url(${faction()?.image});`}
 					>
 						<div class="hero-overlay bg-opacity-60"></div>
 						<div class="hero-content text-center text-neutral-content">
@@ -41,37 +41,43 @@ const Character: Component<{}> = (props) => {
 									<div class="grid flex-grow card rounded-box place-items-center">
 										<div class="">
 											<span class="text-5xl font-bold">
-												{faction().name}
+												{faction()?.name}
 											</span>
 											<div class="mt-4 grid grid-cols-1 gap-2">
 												<code class="">
 													<div class="text-xl">
 														<span class="font-semibold">
-															Date_of_Inception:{" "}
+															Date of Inception:{" "}
 														</span>
-														{faction().doi}
+														{faction()?.doi}
 													</div>
 													<div class="text-xl">
 														<span class="font-semibold">
-															Advancement_Level:{" "}
+															Advancement Level:{" "}
 														</span>
-														{faction()?.advancement_level}
+														{
+															faction()
+																?.advancement_level
+														}
 													</div>
 													<div class="text-xl">
 														<span class="font-semibold">
-															Droid_Count:{" "}
+															Droid Count:{" "}
 														</span>
-														{faction().droid_count}
+														{faction()?.droid_count}
 													</div>
 													<div class="text-xl">
 														<span class="font-semibold">
-															Weapon_Count:{" "}
+															Weapon Count:{" "}
 														</span>
-														{faction()?.weapon_count}
+														{
+															faction()
+																?.weapon_count
+														}
 													</div>
 													<div class="text-xl">
 														<span class="font-semibold">
-															Base_Planet:{" "}
+															Base Planet:{" "}
 														</span>
 														{faction()?.base_planet}
 													</div>
