@@ -22,10 +22,6 @@ const Faction: Component<{}> = (props) => {
 		getUserWithId(params.name.split("%20").join(" "))
 	);
 
-	createEffect(() => {
-		console.log(faction());
-	});
-
 	return (
 		<>
 			<div class={styles.App}>
