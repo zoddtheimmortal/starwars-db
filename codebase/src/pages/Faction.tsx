@@ -85,7 +85,7 @@ const Character: Component<{}> = (props) => {
 											</div>
 											<a
 												class="btn btn-outline btn-primary mt-4"
-												href={`https://starwars.fandom.com/wiki/${people()
+												href={`https://starwars.fandom.com/wiki/${faction()
 													?.name.split(" ")
 													.join("_")}`}
 											>
