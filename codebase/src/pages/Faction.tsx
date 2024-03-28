@@ -11,7 +11,7 @@ import Search from "../components/ui/search";
 import { Skeleton } from "@suid/material";
 
 const getUserWithId = async (id: string) => {
-	const { data: people, error } = await supabase
+	const { data: faction, error } = await supabase
 		.from("faction")
 		.select()
 		.eq("name", id);
