@@ -11,7 +11,7 @@ import { useNavigate } from "@solidjs/router";
 
 async function getFactions() {
   let { data: factions, error } = await supabase.from("faction").select();
-  return factions;
+  return faction;
 }
 
 const FactionCard: Component<{ fct: any }> = (props) => {
