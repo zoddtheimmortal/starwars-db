@@ -9,6 +9,7 @@ import { supabase } from "../utils/supabase";
 import styles from "../style.module.css";
 import Search from "../components/ui/search";
 import { Skeleton } from "@suid/material";
+import Links from "../assets/links.service";
 
 const getUserWithId = async (id: string) => {
 	const { data: people, error } = await supabase
@@ -22,17 +23,13 @@ const Character: Component<{}> = (props) => {
 	const params = useParams();
 	const [people] = createResource(() => getUserWithId(params.id));
 
-	createEffect(() => {
-		console.log(people());
-	});
-
 	return (
 		<>
 			<div class={styles.App}>
 				{people() ? (
 					<div
 						class="hero min-h-screen"
-						style={`background-image: url(${people().image});`}
+						style={`background-image: url(${people()?.image});`}
 					>
 						<div class="hero-overlay bg-opacity-60"></div>
 						<div class="hero-content text-center text-neutral-content">

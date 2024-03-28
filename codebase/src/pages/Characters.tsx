@@ -9,6 +9,7 @@ import { supabase } from "../utils/supabase";
 import styles from "../style.module.css";
 import Search from "../components/ui/search";
 import { A, useNavigate } from "@solidjs/router";
+import Links from "../assets/links.service";
 
 async function getCharacters() {
 	let { data: people, error } = await supabase.from("people").select();
@@ -16,7 +17,7 @@ async function getCharacters() {
 }
 
 const PeopleCard: Component<{ ppl: any }> = (props) => {
-	const image: string = props.ppl.image;
+	const image: string = props.ppl.image ? props.ppl.image : Links.people;
 	return (
 		<div>
 			<div class="card w-84 h-96 bg-base-100 shadow-xl image-full bg-contain">
