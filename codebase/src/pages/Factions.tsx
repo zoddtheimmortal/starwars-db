@@ -33,7 +33,7 @@ const FactionCard: Component<{ fct: any }> = (props) => {
             <div>Weapon Count: {fct.weapon_count}</div>
           </code>
           <div className="card-actions justify-end mt-1">
-            <button onClick={() => props.nav(`/character/${fct.name}`)} className="btn btn-primary">
+            <button onClick={() => props.nav(`/faction/${fct.name}`)} className="btn btn-primary">
               Know More
             </button>
           </div>
