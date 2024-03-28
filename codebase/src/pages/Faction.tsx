@@ -113,4 +113,4 @@ const Character: Component<{}> = (props) => {
 	);
 };
 
-export default Character;
+export default Faction;
