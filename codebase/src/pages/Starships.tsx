@@ -37,7 +37,7 @@ const StarshipCard: Component<{ fct: any }> = (props) => {
 					<div class="card-actions justify-end mt-1">
 						<A
 							class="btn btn-primary"
-							href={`/starships/${props.ssp.name}`}
+							href={`/starships/${props.ssp.vin}`}
 						>
 							Know More
 						</A>
