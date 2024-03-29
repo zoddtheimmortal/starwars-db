@@ -23,16 +23,26 @@ const StarshipCard: Component<{ ssp: any }> = (props) => {
 						{props.ssp.name}
 					</h2>
 					<code>
-						<div>Price: {props.ssp.price}</div>
-						<div>Crew: {props.ssp.crew}</div>
-						<div>Payload: {props.ssp.payload}</div>
-						<div>Maximum Speed: {props.ssp.max_speed}</div>
-						<div>Fuel Type: {props.ssp.fuel_type}</div>
-						<div>Fuel Capacity: {props.ssp.fuel_capacity}</div>
+						<div class="line-clamp-1">Price: {props.ssp.price}</div>
+						<div class="line-clamp-1">Crew: {props.ssp.crew}</div>
+						<div class="line-clamp-1">
+							Payload: {props.ssp.payload}
+						</div>
+						<div class="line-clamp-1">
+							Maximum Speed: {props.ssp.max_speed}
+						</div>
+						<div class="line-clamp-1">
+							Fuel Type: {props.ssp.fuel_type}
+						</div>
+						<div class="line-clamp-1">
+							Fuel Capacity: {props.ssp.fuel_capacity}
+						</div>
 						<div class="line-clamp-1">
 							Manufacturer: {props.ssp.manufacturer}
 						</div>
-						<div>Owned by: {props.ssp.owned_by}</div>
+						<div class="line-clamp-1">
+							Owned by: {props.ssp.owned_by}
+						</div>
 					</code>
 					<div class="card-actions justify-end mt-1">
 						<A
@@ -95,11 +105,17 @@ const Starships: Component<{}> = (props) => {
 						</li>
 					</ul>
 				</div>
-				<div class="mx-3 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-					<For each={starship()}>
-						{(ssp) => <StarshipCard ssp={ssp} />}
-					</For>
-				</div>
+				{starship() ? (
+					<div class="mx-3 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+						<For each={starship()}>
+							{(ssp) => <StarshipCard ssp={ssp} />}
+						</For>
+					</div>
+				) : (
+					<div class="hero min-h-screen">
+						<span class="loading loading-dots loading-lg"></span>
+					</div>
+				)}
 			</div>
 		</>
 	);
