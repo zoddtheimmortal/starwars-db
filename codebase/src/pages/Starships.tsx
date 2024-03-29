@@ -57,7 +57,7 @@ const Starships: Component<{}> = (props) => {
 				<Search />
 				<div class="mx-3 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 					<For each={starship()}>
-						{(ssp) => <StarshipCard fct={fct} />}
+						{(ssp) => <StarshipCard ssp={ssp} />}
 					</For>
 				</div>
 			</div>
