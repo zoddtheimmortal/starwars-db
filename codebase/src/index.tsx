@@ -39,7 +39,7 @@ render(
 				<Route path="/factions" component={Factions} />
 				<Route path="/factions/:name" component={Faction} />
 				<Route path="/starships" component={Starships} />
-				<Route path="/starship/:vin" component={Starship} />
+				<Route path="/starships/:vin" component={Starship} />
 			</Router>
 		</ThemeProvider>
 	),
