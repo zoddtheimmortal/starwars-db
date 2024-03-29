@@ -6,7 +6,7 @@ import { A } from "@solidjs/router";
 
 async function getStarships() {
 	let { data: starships, error } = await supabase.from("starship").select();
-	return factions;
+	return starships;
 }
 
 const StarshipCard: Component<{ fct: any }> = (props) => {
