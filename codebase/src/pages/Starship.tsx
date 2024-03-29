@@ -19,7 +19,7 @@ const getUserWithId = async (vin: string) => {
 const Starship: Component<{}> = (props) => {
 	const params = useParams();
 	const [starship] = createResource(() =>
-		getUserWithId(params.name.split("%20").join(" "))
+		getUserWithId(params.vin)
 	);
 
 	return (
