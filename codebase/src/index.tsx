@@ -13,6 +13,8 @@ import Factions from "./pages/Factions";
 import Faction from "./pages/Faction";
 import Starships from "./pages/Starships";
 import Starship from "./pages/Starship";
+import Planets from "./pages/Planets";
+import Planet from "./pages/Planet";
 
 const root = document.getElementById("root");
 

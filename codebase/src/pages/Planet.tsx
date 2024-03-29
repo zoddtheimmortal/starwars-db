@@ -19,7 +19,7 @@ const getUserWithId = async (name: string) => {
 const Planet: Component<{}> = (props) => {
 	const params = useParams();
 	const [planet] = createResource(() =>
-		getUserWithId(params.name)
+		getUserWithId(params.name.split("%20").join(" "))
 	);
 
 	return (
@@ -69,7 +69,10 @@ const Planet: Component<{}> = (props) => {
 														<span class="font-semibold">
 															Maximum Speed:{" "}
 														</span>
-														{planet()?.orbital_speed}
+														{
+															planet()
+																?.orbital_speed
+														}
 													</div>
 													<div class="text-xl">
 														<span class="font-semibold">
@@ -77,7 +80,7 @@ const Planet: Component<{}> = (props) => {
 														</span>
 														{planet()?.terrain}
 													</div>
-                          <div class="text-xl">
+													<div class="text-xl">
 														<span class="font-semibold">
 															Fuel Capacity:{" "}
 														</span>
