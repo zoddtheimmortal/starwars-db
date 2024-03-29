@@ -133,4 +133,4 @@ const Starship: Component<{}> = (props) => {
 	);
 };
 
-export default Faction;
+export default Starship;
