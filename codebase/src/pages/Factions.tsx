@@ -91,11 +91,17 @@ const Factions: Component<{}> = (props) => {
 						</li>
 					</ul>
 				</div>
-				<div class="mx-3 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-					<For each={faction()}>
-						{(fct) => <FactionCard fct={fct} />}
-					</For>
-				</div>
+				{faction() ? (
+					<div class="mx-3 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+						<For each={faction()}>
+							{(fct) => <FactionCard fct={fct} />}
+						</For>
+					</div>
+				) : (
+					<div class="hero min-h-screen">
+						<span class="loading loading-dots loading-lg"></span>
+					</div>
+				)}
 			</div>
 		</>
 	);
