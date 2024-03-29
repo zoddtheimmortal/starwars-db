@@ -9,7 +9,7 @@ async function getStarships() {
 	return starships;
 }
 
-const StarshipCard: Component<{ fct: any }> = (props) => {
+const StarshipCard: Component<{ ssp: any }> = (props) => {
 	return (
 		<div>
 			<div
