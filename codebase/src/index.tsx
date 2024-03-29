@@ -11,6 +11,8 @@ import Characters from "./pages/Characters";
 import Character from "./pages/Character";
 import Factions from "./pages/Factions";
 import Faction from "./pages/Faction";
+import Starships from "./pages/Starships";
+import Starship from "./pages/Starship";
 
 const root = document.getElementById("root");
 
@@ -36,6 +38,8 @@ render(
 				<Route path="/character/:id" component={Character} />
 				<Route path="/factions" component={Factions} />
 				<Route path="/factions/:name" component={Faction} />
+				<Route path="/starships" component={Starships} />
+				<Route path="/starship/:vin" component={Starship} />
 			</Router>
 		</ThemeProvider>
 	),
