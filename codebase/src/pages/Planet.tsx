@@ -69,10 +69,7 @@ const Planet: Component<{}> = (props) => {
 														<span class="font-semibold">
 															Orbital Speed:{" "}
 														</span>
-														{
-															planet()
-																?.orbital_speed
-														}
+														{planet()?.orbital_speed}
 													</div>
 													<div class="text-xl">
 														<span class="font-semibold">
