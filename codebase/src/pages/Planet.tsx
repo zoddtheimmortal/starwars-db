@@ -49,25 +49,25 @@ const Planet: Component<{}> = (props) => {
 													</div>
 													<div class="text-xl">
 														<span class="font-semibold">
-															Crew:{" "}
+															Gravity:{" "}
 														</span>
 														{planet()?.gravity}
 													</div>
 													<div class="text-xl">
 														<span class="font-semibold">
-															Payload:{" "}
+															Population:{" "}
 														</span>
 														{planet()?.population}
 													</div>
 													<div class="text-xl">
 														<span class="font-semibold">
-															Price:{" "}
+															Galaxy:{" "}
 														</span>
 														{planet()?.galaxy}
 													</div>
 													<div class="text-xl">
 														<span class="font-semibold">
-															Maximum Speed:{" "}
+															Orbital Speed:{" "}
 														</span>
 														{
 															planet()
@@ -76,13 +76,13 @@ const Planet: Component<{}> = (props) => {
 													</div>
 													<div class="text-xl">
 														<span class="font-semibold">
-															Fuel Type:{" "}
+															Terrain:{" "}
 														</span>
 														{planet()?.terrain}
 													</div>
 													<div class="text-xl">
 														<span class="font-semibold">
-															Fuel Capacity:{" "}
+															Climate:{" "}
 														</span>
 														{planet()?.climate}
 													</div>
