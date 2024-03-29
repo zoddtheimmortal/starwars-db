@@ -99,11 +99,17 @@ const Characters: Component<{}> = (props) => {
 						</li>
 					</ul>
 				</div>
-				<div class="mx-3 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-					<For each={people()}>
-						{(ppl) => <PeopleCard ppl={ppl} />}
-					</For>
-				</div>
+				{people() ? (
+					<div class="mx-3 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+						<For each={people()}>
+							{(ppl) => <PeopleCard ppl={ppl} />}
+						</For>
+					</div>
+				) : (
+					<div class="hero min-h-screen">
+						<span class="loading loading-dots loading-lg"></span>
+					</div>
+				)}
 			</div>
 		</>
 	);
