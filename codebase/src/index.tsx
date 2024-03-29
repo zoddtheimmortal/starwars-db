@@ -40,6 +40,8 @@ render(
 				<Route path="/factions/:name" component={Faction} />
 				<Route path="/starships" component={Starships} />
 				<Route path="/starships/:vin" component={Starship} />
+				<Route path="/planets" component={Planets} />
+				<Route path="/planets/:name" component={Planet} />
 			</Router>
 		</ThemeProvider>
 	),
