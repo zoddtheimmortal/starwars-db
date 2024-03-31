@@ -3,9 +3,20 @@ import { supabase } from "../utils/supabase";
 import styles from "../style.module.css";
 import Search from "../components/ui/search";
 import { A } from "@solidjs/router";
+import { get } from "http";
 
 async function getFactions() {
 	let { data: factions, error } = await supabase.from("faction").select();
+	return factions;
+}
+
+async function getQuery(query: string) {
+	if (query === "") return getFactions();
+	const { data: factions, error } = await supabase
+		.from("faction")
+		.select()
+		.textSearch("fulltext_faction", query);
+	if (error) console.error(error);
 	return factions;
 }
 
@@ -45,12 +56,18 @@ const FactionCard: Component<{ fct: any }> = (props) => {
 };
 
 const Factions: Component<{}> = (props) => {
-	const [faction] = createResource(getFactions);
+	const [query, setQuery] = createSignal("");
+	const [faction, { refetch }] = createResource(() => getQuery(query()));
+
+	const handleSearchSubmit = (value: string) => {
+		setQuery(value);
+		refetch();
+	};
 
 	return (
 		<>
 			<div class={styles.App}>
-				<Search />
+				<Search onSubmit={handleSearchSubmit} />
 				<div class="text-sm breadcrumbs mx-6 mb-2">
 					<ul>
 						<li>
