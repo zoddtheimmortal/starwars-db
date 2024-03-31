@@ -9,6 +9,16 @@ async function getStarships() {
 	return starships;
 }
 
+async function getQuery(query: string) {
+	if (query === "") return getStarships();
+	const { data: starships, error } = await supabase
+		.from("starship")
+		.select()
+		.textSearch("fulltext_starship", query);
+	if (error) console.error(error);
+	return starships;
+}
+
 const StarshipCard: Component<{ ssp: any }> = (props) => {
 	return (
 		<div>
@@ -59,12 +69,18 @@ const StarshipCard: Component<{ ssp: any }> = (props) => {
 };
 
 const Starships: Component<{}> = (props) => {
-	const [starship] = createResource(getStarships);
+	const [query, setQuery] = createSignal("");
+	const [starship, { refetch }] = createResource(() => getQuery(query()));
+
+	const handleSearchSubmit = (value: string) => {
+		setQuery(value);
+		refetch();
+	};
 
 	return (
 		<>
 			<div class={styles.App}>
-				<Search />
+				<Search onSubmit={handleSearchSubmit} />
 				<div class="text-sm breadcrumbs mx-6 mb-2">
 					<ul>
 						<li>
