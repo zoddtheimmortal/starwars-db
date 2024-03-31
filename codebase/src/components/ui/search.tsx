@@ -1,11 +1,28 @@
-import { Component } from "solid-js";
-const Search: Component<{}> = (props) => {
+import { Component, createSignal } from "solid-js";
+
+interface SearchProps {
+	onSubmit: (value: string) => void;
+}
+
+const Search: Component<SearchProps> = (props) => {
+	const [value, setValue] = createSignal("");
+
+	const handleSubmit = (e: Event) => {
+		e.preventDefault();
+		props.onSubmit(value());
+	};
+
 	return (
 		<div>
-			<form class="m-6 mb-4">
+			<form class="m-6 mb-4" onSubmit={handleSubmit}>
 				<label class="input input-bordered bg-base-300 flex items-center gap-2">
-					<input type="text" class="grow" placeholder="Search" />
-					<button class="submit btn btn-ghost btn-circle">
+					<input
+						type="text"
+						class="grow"
+						placeholder="Search"
+						onInput={(e: any) => setValue(e.target.value)}
+					/>
+					<button class="btn btn-ghost btn-circle">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							viewBox="0 0 16 16"

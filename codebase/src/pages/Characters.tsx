@@ -16,6 +16,17 @@ async function getCharacters() {
 	return people;
 }
 
+const getQuery = async (query: string) => {
+	if (query === "") return getCharacters();
+	const { data: people, error } = await supabase
+		.from("people")
+		.select()
+		.textSearch("fulltext_people", query);
+
+	if (error) console.error(error);
+	return people;
+};
+
 const PeopleCard: Component<{ ppl: any }> = (props) => {
 	const image: string = props.ppl.image ? props.ppl.image : Links.people;
 	return (
@@ -49,13 +60,19 @@ const PeopleCard: Component<{ ppl: any }> = (props) => {
 };
 
 const Characters: Component<{}> = (props) => {
-	const [people] = createResource(getCharacters);
+	const [query, setQuery] = createSignal("");
+	const [people, { refetch }] = createResource(() => getQuery(query()));
 	const nav = useNavigate();
+
+	const handleSearchSubmit = (value: string) => {
+		setQuery(value);
+		refetch();
+	};
 
 	return (
 		<>
 			<div class={styles.App}>
-				<Search />
+				<Search onSubmit={handleSearchSubmit} />
 				<div class="text-sm breadcrumbs mx-6 mb-2">
 					<ul>
 						<li>
