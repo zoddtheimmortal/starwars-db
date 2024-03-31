@@ -9,6 +9,16 @@ async function getPlanets() {
 	return planets;
 }
 
+async function getQuery(query: string) {
+	if (query === "") return getPlanets();
+	const { data: planets, error } = await supabase
+		.from("planet")
+		.select()
+		.textSearch("fulltext_planet", query);
+	if (error) console.error(error);
+	return planets;
+}
+
 const PlanetCard: Component<{ ssp: any }> = (props) => {
 	return (
 		<div>
@@ -23,8 +33,12 @@ const PlanetCard: Component<{ ssp: any }> = (props) => {
 						{props.ssp.name}
 					</h2>
 					<code>
-						<div class="line-clamp-1">Gravity: {props.ssp.gravity}</div>
-						<div class="line-clamp-1">Population: {props.ssp.population}</div>
+						<div class="line-clamp-1">
+							Gravity: {props.ssp.gravity}
+						</div>
+						<div class="line-clamp-1">
+							Population: {props.ssp.population}
+						</div>
 						<div class="line-clamp-1">
 							Galaxy: {props.ssp.galaxy}
 						</div>
@@ -53,12 +67,18 @@ const PlanetCard: Component<{ ssp: any }> = (props) => {
 };
 
 const Planets: Component<{}> = (props) => {
-	const [planet] = createResource(getPlanets);
+	const [query, setQuery] = createSignal("");
+	const [planet, { refetch }] = createResource(() => getQuery(query()));
+
+	const handleSearchSubmit = (value: string) => {
+		setQuery(value);
+		refetch();
+	};
 
 	return (
 		<>
 			<div class={styles.App}>
-				<Search />
+				<Search onSubmit={handleSearchSubmit} />
 				<div class="text-sm breadcrumbs mx-6 mb-2">
 					<ul>
 						<li>
