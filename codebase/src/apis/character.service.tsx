@@ -1,3 +1,20 @@
+import { createResource } from "solid-js";
+import { supabase } from "../utils/supabase";
+import Dropdown from "../components/ui/dropdown";
+import PlanetService from "./planet.service";
+
+const getGender = async () => {
+	const { data, error } = await supabase.from("distinct_gender").select("*");
+	return data?.map((item) => item.gender);
+};
+
+const getPersonality = async () => {
+	const { data, error } = await supabase
+		.from("distinct_personality")
+		.select("*");
+	return data?.map((item) => item.personality);
+};
+
 const getOptions = () => {
 	return (
 		<div>
@@ -6,7 +23,7 @@ const getOptions = () => {
 					<h2 class="card-title">Character Filtering Options</h2>
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 						<div>
-							<label class="form-control w-full max-w-xs">
+							<label class="</div>form-control w-full max-w-xs">
 								<div class="label">
 									<span class="label-text">Search Name</span>
 								</div>
@@ -23,17 +40,7 @@ const getOptions = () => {
 							</label>
 						</div>
 						<div>
-							<div class="label">
-								<span class="label-text">Select Gender</span>
-							</div>
-							<select class="select select-bordered w-full max-w-xs">
-								<option disabled selected>
-									Gender
-								</option>
-								<option>Male</option>
-								<option>Female</option>
-								<option>Both</option>
-							</select>
+							<Dropdown name="Gender" getOptions={getGender} />
 						</div>
 						<div>
 							<div class="label">
@@ -104,33 +111,10 @@ const getOptions = () => {
 							</label>
 						</div>
 						<div>
-							<div class="label">
-								<span class="label-text">
-									Select Personality
-								</span>
-							</div>
-							<select class="select select-bordered w-full max-w-xs">
-								<option disabled selected>
-									Basic
-								</option>
-								<option>Revolutionary</option>
-								<option>Aggressive</option>
-								<option>Powerful</option>
-								<option>Calculated</option>
-								<option>Business Acumen</option>
-								<option>Leadership</option>
-								<option>Strong - willed</option>
-								<option>Calm</option>
-								<option>Mighty</option>
-								<option>Timid</option>
-								<option>Ferocious</option>
-								<option>Confident</option>
-								<option>Stoic</option>
-								<option>Cunning</option>
-								<option>Courageous</option>
-								<option>Relaxed</option>
-								<option>Comicful</option>
-							</select>
+							<Dropdown
+								name="Personality"
+								getOptions={getPersonality}
+							/>
 						</div>
 					</div>
 					<div>
@@ -249,33 +233,10 @@ const getOptions = () => {
 										</label>
 									</div>
 									<div>
-										<div class="label">
-											<span class="label-text">
-												Select Galaxy
-											</span>
-										</div>
-										<select class="select select-bordered w-full max-w-xs">
-											<option disabled selected>
-												Galaxy
-											</option>
-											<option>Tarabba sector</option>
-											<option>Raioballo sector</option>
-											<option>Gordian Reach</option>
-											<option>Mid Rim Territories</option>
-											<option>Calamari sector</option>
-											<option>Western Reaches</option>
-											<option>Kessel sector</option>
-											<option>Core Worlds</option>
-											<option>Quelli sector</option>
-											<option>
-												Outer Rim Territories
-											</option>
-											<option>Chommell sector</option>
-											<option>The Slice</option>
-											<option>Moddell sector</option>
-											<option>Wild Space</option>
-											<option>Anoat sector</option>
-										</select>
+										<Dropdown
+											name="Galaxy"
+											getOptions={PlanetService.getGalaxy}
+										/>
 									</div>
 									<div>
 										<div class="label">
@@ -343,6 +304,8 @@ const getOptions = () => {
 
 const CharacterService = {
 	getOptions,
+	getGender,
+	getPersonality,
 };
 
 export default CharacterService;
