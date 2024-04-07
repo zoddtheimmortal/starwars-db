@@ -85,8 +85,7 @@ const Search: Component<{}> = (props) => {
 									</select>
 								</label>
 							</div>
-							<div>{filters()}</div>
-							<div>placeholder</div>
+							<div class="mb-4">{filters()}</div>
 						</div>
 					</div>
 				</div>

@@ -137,7 +137,7 @@ const getOptions = () => {
 						<div class="mt-2 card w-full bg-base-300 shadow-sm">
 							<div class="card-body">
 								<h2 class="card-title">Faction</h2>
-								<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+								<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 									<div>
 										<label class="form-control w-full max-w-xs">
 											<div class="label">
@@ -156,15 +156,145 @@ const getOptions = () => {
 										<label class="form-control w-full max-w-xs">
 											<div class="label">
 												<span class="label-text">
-													Filter With Language
+													Advancement Level
+												</span>
+											</div>
+											<div class="rating center">
+												<input
+													type="radio"
+													name="rating-1"
+													class="mask mask-star"
+												/>
+												<input
+													type="radio"
+													name="rating-1"
+													class="mask mask-star"
+												/>
+												<input
+													type="radio"
+													name="rating-1"
+													class="mask mask-star"
+												/>
+												<input
+													type="radio"
+													name="rating-1"
+													class="mask mask-star"
+													checked
+												/>
+												<input
+													type="radio"
+													name="rating-1"
+													class="mask mask-star"
+												/>
+											</div>
+										</label>
+									</div>
+									<div>
+										<div class="label">
+											<span class="label-text">
+												Set Max Droid Count
+											</span>
+										</div>
+										<input
+											type="range"
+											min="0"
+											max="3000"
+											value="2000"
+											class="range range-sm"
+											step="250"
+										/>
+										<div class="w-full flex justify-between text-xs px-2">
+											<span>0</span>
+											<span>3000</span>
+										</div>
+									</div>
+									<div>
+										<div class="label">
+											<span class="label-text">
+												Set Max Weapon Count
+											</span>
+										</div>
+										<input
+											type="range"
+											min="0"
+											max="3000"
+											value="1800"
+											class="range range-sm"
+											step="250"
+										/>
+										<div class="w-full flex justify-between text-xs px-2">
+											<span>0</span>
+											<span>3000</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="mt-2 card w-full bg-base-300 shadow-sm">
+							<div class="card-body">
+								<h2 class="card-title">Planet</h2>
+								<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+									<div>
+										<label class="form-control w-full max-w-xs">
+											<div class="label">
+												<span class="label-text">
+													Filter With Planet
 												</span>
 											</div>
 											<input
 												type="text"
-												placeholder="Langauge"
+												placeholder="Planet Name"
 												class="input input-bordered w-full max-w-xs"
 											/>
 										</label>
+									</div>
+									<div>
+										<div class="label">
+											<span class="label-text">
+												Select Galaxy
+											</span>
+										</div>
+										<select class="select select-bordered w-full max-w-xs">
+											<option disabled selected>
+												Galaxy
+											</option>
+											<option>Tarabba sector</option>
+											<option>Raioballo sector</option>
+											<option>Gordian Reach</option>
+											<option>Mid Rim Territories</option>
+											<option>Calamari sector</option>
+											<option>Western Reaches</option>
+											<option>Kessel sector</option>
+											<option>Core Worlds</option>
+											<option>Quelli sector</option>
+											<option>
+												Outer Rim Territories
+											</option>
+											<option>Chommell sector</option>
+											<option>The Slice</option>
+											<option>Moddell sector</option>
+											<option>Wild Space</option>
+											<option>Anoat sector</option>
+										</select>
+									</div>
+									<div>
+										<div class="label">
+											<span class="label-text">
+												Set Max Gravity
+											</span>
+										</div>
+										<input
+											type="range"
+											min="0"
+											max="1.5"
+											value="1"
+											class="range range-sm"
+											step="0.1"
+										/>
+										<div class="w-full flex justify-between text-xs px-2">
+											<span>0</span>
+											<span>1.5</span>
+										</div>
 									</div>
 								</div>
 							</div>
