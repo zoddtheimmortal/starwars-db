@@ -1,6 +1,6 @@
 import { Component } from "solid-js";
 import Theme_Button from "./ui/theme_button";
-import { useNavigate } from "@solidjs/router";
+import { A, useNavigate } from "@solidjs/router";
 
 const Nav: Component<{}> = (props) => {
 	const navigate = useNavigate();
@@ -31,16 +31,13 @@ const Nav: Component<{}> = (props) => {
 					</div>
 					<ul
 						tabindex="0"
-						class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+						class="menu dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
 					>
 						<li>
-							<a>Homepage</a>
+							<A href="/search">Search</A>
 						</li>
 						<li>
-							<a>Portfolio</a>
-						</li>
-						<li>
-							<a>About</a>
+							<A href="/home">Home</A>
 						</li>
 					</ul>
 				</div>
