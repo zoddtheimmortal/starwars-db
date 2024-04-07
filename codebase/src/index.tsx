@@ -44,6 +44,8 @@ render(
 				<Route path="/starships/:vin" component={Starship} />
 				<Route path="/planets" component={Planets} />
 				<Route path="/planets/:name" component={Planet} />
+				<Route path="/speciess" component={Speciess} />
+				<Route path="/speciess/:name" component={Species} />
 			</Router>
 		</ThemeProvider>
 	),
