@@ -15,6 +15,8 @@ import Starships from "./pages/Starships";
 import Starship from "./pages/Starship";
 import Planets from "./pages/Planets";
 import Planet from "./pages/Planet";
+import Specie from "./pages/Specie";
+import Species from "./pages/Species";
 
 const root = document.getElementById("root");
 
@@ -44,8 +46,8 @@ render(
 				<Route path="/starships/:vin" component={Starship} />
 				<Route path="/planets" component={Planets} />
 				<Route path="/planets/:name" component={Planet} />
-				<Route path="/speciess" component={Speciess} />
-				<Route path="/speciess/:name" component={Species} />
+				<Route path="/species" component={Species} />
+				<Route path="/species/:name" component={Specie} />
 			</Router>
 		</ThemeProvider>
 	),
