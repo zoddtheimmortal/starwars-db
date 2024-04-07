@@ -25,7 +25,15 @@ module.exports = {
 	},
 	plugins: [require("daisyui"), addVariablesForColors],
 	daisyui: {
-		themes: ["light", "dark", "synthwave", "coffee", "winter", "sunset"],
+		themes: [
+			"light",
+			"dark",
+			"synthwave",
+			"coffee",
+			"winter",
+			"sunset",
+			"luxury",
+		],
 	},
 };
 
