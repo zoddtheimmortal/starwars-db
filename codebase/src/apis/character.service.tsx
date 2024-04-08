@@ -1,7 +1,27 @@
-import { createResource } from "solid-js";
+import { createEffect, createResource, createSignal } from "solid-js";
 import { supabase } from "../utils/supabase";
 import Dropdown from "../components/ui/dropdown";
 import PlanetService from "./planet.service";
+import { c, s } from "vite/dist/node/types.d-aGj9QkWt";
+import SpeciesService from "./species.service";
+
+type FormData = {
+	name: string;
+	gender: string;
+	maxHeight: number;
+	maxWeight: number;
+	birthYear: number[];
+	personality: string;
+	faction: string;
+	advLevel: number;
+	maxDroidCount: number;
+	maxWeaponCount: number;
+	planet: string;
+	galaxy: string;
+	maxGravity: number;
+	species: string;
+	language: string;
+};
 
 const getGender = async () => {
 	const { data, error } = await supabase.from("distinct_gender").select("*");
@@ -16,14 +36,58 @@ const getPersonality = async () => {
 };
 
 const getOptions = () => {
+	const [name, setName] = createSignal("");
+	const [gender, setGender] = createSignal("");
+	const [maxHeight, setMaxHeight] = createSignal(0);
+	const [maxWeight, setMaxWeight] = createSignal(0);
+	const [birthYearMin, setBirthYearMin] = createSignal(0);
+	const [birthYearMax, setBirthYearMax] = createSignal(0);
+	const [personality, setPersonality] = createSignal("");
+
+	const [faction, setFaction] = createSignal("");
+	const [advLevel, setAdvLevel] = createSignal(0);
+	const [maxDroidCount, setMaxDroidCount] = createSignal(0);
+	const [maxWeaponCount, setMaxWeaponCount] = createSignal(0);
+
+	const [planet, setPlanet] = createSignal("");
+	const [galaxy, setGalaxy] = createSignal("");
+	const [maxGravity, setMaxGravity] = createSignal(0);
+
+	const [species, setSpecies] = createSignal("");
+	const [language, setLanguage] = createSignal("");
+
+	let data: () => FormData = () => ({
+		name: name(),
+		gender: gender(),
+		maxHeight: maxHeight(),
+		maxWeight: maxWeight(),
+		birthYear: [birthYearMin(), birthYearMax()],
+		personality: personality(),
+		faction: faction(),
+		advLevel: advLevel(),
+		maxDroidCount: maxDroidCount(),
+		maxWeaponCount: maxWeaponCount(),
+		planet: planet(),
+		galaxy: galaxy(),
+		maxGravity: maxGravity(),
+		species: species(),
+		language: language(),
+	});
+
 	return (
 		<div>
 			<div class="card w-full bg-base-200 shadow-sm">
 				<div class="card-body">
 					<h2 class="card-title">Character Filtering Options</h2>
+					{/* <div
+						class="btn btn-primary"
+						onClick={() => console.log(data())}
+					>
+						Test Button
+					</div> */}
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 						<div>
-							<label class="</div>form-control w-full max-w-xs">
+							<label class="form-control w-full max-w-xs">
 								<div class="label">
 									<span class="label-text">Search Name</span>
 								</div>
@@ -31,6 +95,7 @@ const getOptions = () => {
 									type="text"
 									placeholder="Type here"
 									class="input input-bordered w-full max-w-xs"
+									onChange={(e) => setName(e.target.value)}
 								/>
 								<div class="label">
 									<span class="label-text-alt">
@@ -40,7 +105,11 @@ const getOptions = () => {
 							</label>
 						</div>
 						<div>
-							<Dropdown name="Gender" getOptions={getGender} />
+							<Dropdown
+								name="Gender"
+								getOptions={getGender}
+								setOptions={setGender}
+							/>
 						</div>
 						<div>
 							<div class="label">
@@ -52,6 +121,9 @@ const getOptions = () => {
 								max="250"
 								value="200"
 								class="range range-sm"
+								onChange={(e) =>
+									setMaxHeight(Number(e.target.value))
+								}
 							/>
 							<div class="w-full flex justify-between text-xs px-2">
 								<span>30</span>
@@ -68,6 +140,9 @@ const getOptions = () => {
 								max="200"
 								value="180"
 								class="range range-sm"
+								onChange={(e) =>
+									setMaxWeight(Number(e.target.value))
+								}
 							/>
 							<div class="w-full flex justify-between text-xs px-2">
 								<span>0</span>
@@ -87,6 +162,11 @@ const getOptions = () => {
 											type="text"
 											placeholder="Min Year"
 											class="input input-bordered w-full max-w-xs"
+											onChange={(e) =>
+												setBirthYearMin(
+													Number(e.target.value)
+												)
+											}
 										/>
 										<div class="label">
 											<span class="label-text-alt">
@@ -100,6 +180,11 @@ const getOptions = () => {
 											type="text"
 											placeholder="Max Year"
 											class="input input-bordered w-full max-w-xs"
+											onChange={(e) =>
+												setBirthYearMax(
+													Number(e.target.value)
+												)
+											}
 										/>
 										<div class="label">
 											<span class="label-text-alt">
@@ -114,6 +199,7 @@ const getOptions = () => {
 							<Dropdown
 								name="Personality"
 								getOptions={getPersonality}
+								setOptions={setPersonality}
 							/>
 						</div>
 					</div>
@@ -133,6 +219,9 @@ const getOptions = () => {
 												type="text"
 												placeholder="Faction Name"
 												class="input input-bordered w-full max-w-xs"
+												onChange={(e) =>
+													setFaction(e.target.value)
+												}
 											/>
 										</label>
 									</div>
@@ -148,27 +237,42 @@ const getOptions = () => {
 													type="radio"
 													name="rating-1"
 													class="mask mask-star"
+													onClick={(e) =>
+														setAdvLevel(1)
+													}
 												/>
 												<input
 													type="radio"
 													name="rating-1"
 													class="mask mask-star"
+													onClick={(e) =>
+														setAdvLevel(2)
+													}
 												/>
 												<input
 													type="radio"
 													name="rating-1"
 													class="mask mask-star"
+													onClick={(e) =>
+														setAdvLevel(3)
+													}
 												/>
 												<input
 													type="radio"
 													name="rating-1"
 													class="mask mask-star"
 													checked
+													onClick={(e) =>
+														setAdvLevel(4)
+													}
 												/>
 												<input
 													type="radio"
 													name="rating-1"
 													class="mask mask-star"
+													onClick={(e) =>
+														setAdvLevel(5)
+													}
 												/>
 											</div>
 										</label>
@@ -186,6 +290,11 @@ const getOptions = () => {
 											value="2000"
 											class="range range-sm"
 											step="250"
+											onChange={(e) =>
+												setMaxDroidCount(
+													Number(e.target.value)
+												)
+											}
 										/>
 										<div class="w-full flex justify-between text-xs px-2">
 											<span>0</span>
@@ -205,6 +314,11 @@ const getOptions = () => {
 											value="1800"
 											class="range range-sm"
 											step="250"
+											onChange={(e) =>
+												setMaxWeaponCount(
+													Number(e.target.value)
+												)
+											}
 										/>
 										<div class="w-full flex justify-between text-xs px-2">
 											<span>0</span>
@@ -229,6 +343,9 @@ const getOptions = () => {
 												type="text"
 												placeholder="Planet Name"
 												class="input input-bordered w-full max-w-xs"
+												onChange={(e) =>
+													setPlanet(e.target.value)
+												}
 											/>
 										</label>
 									</div>
@@ -236,6 +353,7 @@ const getOptions = () => {
 										<Dropdown
 											name="Galaxy"
 											getOptions={PlanetService.getGalaxy}
+											setOptions={setGalaxy}
 										/>
 									</div>
 									<div>
@@ -251,6 +369,11 @@ const getOptions = () => {
 											value="1"
 											class="range range-sm"
 											step="0.1"
+											onChange={(e) =>
+												setMaxGravity(
+													Number(e.target.value)
+												)
+											}
 										/>
 										<div class="w-full flex justify-between text-xs px-2">
 											<span>0</span>
@@ -275,22 +398,20 @@ const getOptions = () => {
 												type="text"
 												placeholder="Species Name"
 												class="input input-bordered w-full max-w-xs"
+												onChange={(e) =>
+													setSpecies(e.target.value)
+												}
 											/>
 										</label>
 									</div>
 									<div>
-										<label class="form-control w-full max-w-xs">
-											<div class="label">
-												<span class="label-text">
-													Filter With Language
-												</span>
-											</div>
-											<input
-												type="text"
-												placeholder="Langauge"
-												class="input input-bordered w-full max-w-xs"
-											/>
-										</label>
+										<Dropdown
+											name="Language"
+											getOptions={
+												SpeciesService.getLanguages
+											}
+											setOptions={setLanguage}
+										/>
 									</div>
 								</div>
 							</div>
