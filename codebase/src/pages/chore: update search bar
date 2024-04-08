@@ -1,7 +1,8 @@
 import { Component, Show, createSignal } from "solid-js";
 import styles from "../style.module.css";
 import CharacterService from "../apis/character.service";
-
+import FactionService from "../apis/faction.service";
+import StarshipService from "../apis/starship.service";
 const [filters, setFilters] = createSignal(
 	<div class="card w-full bg-base-200 shadow-sm">
 		<div class="card-body">
@@ -19,7 +20,10 @@ const handleFilterChange = (selectedOption: string) => {
 			filterOptions = CharacterService.getOptions();
 			break;
 		case "Factions":
-			filterOptions = <div>Faction Options</div>;
+			filterOptions = FactionService.getOptions();
+			break;
+		case "Starships":
+			filterOptions = StarshipService.getOptions();
 			break;
 		default:
 			filterOptions = <div>Invalid Option</div>;
