@@ -18,6 +18,8 @@ import Planet from "./pages/Planet";
 import Specie from "./pages/Specie";
 import Species from "./pages/Species";
 import Search from "./pages/Search";
+import Weapon from "./pages/Weapon";
+import Weapons from "./pages/Weapons";
 
 const root = document.getElementById("root");
 
@@ -49,7 +51,10 @@ render(
 				<Route path="/planets/:name" component={Planet} />
 				<Route path="/species" component={Species} />
 				<Route path="/species/:name" component={Specie} />
+				<Route path="/weapons" component={Weapons} />
+				<Route path="/weapons/:model_no" component={Weapon} />
 				<Route path="/search" component={Search} />
+				
 			</Router>
 		</ThemeProvider>
 	),
