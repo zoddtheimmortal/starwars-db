@@ -40,14 +40,18 @@ const WeaponCard: Component<{ wpn: any }> = (props) => {
 						{props.wpn.name}
 					</h2>
 					<code>
-						<div class="line-clamp-1">Damage: {props.wpn.damage}</div>
+						<div class="line-clamp-1">
+							Damage: {props.wpn.damage}
+						</div>
 						<div class="line-clamp-1">Type: {props.wpn.type}</div>
-						<div class="line-clamp-1">Manufacturer: {props.wpn.manufacturer}</div>
+						<div class="line-clamp-1">
+							Manufacturer: {props.wpn.manufacturer}
+						</div>
 						<div class="line-clamp-1">Range: {props.wpn.range}</div>
 					</code>
 					<div class="card-actions justify-end mt-1">
 						<A
-							href={`/weapon/${props.wpn.model_no}`}
+							href={`/weapons/${props.wpn.model_no}`}
 							class="btn btn-primary"
 						>
 							Know More
@@ -94,10 +98,7 @@ const Weapons: Component<{}> = (props) => {
 							</a>
 						</li>
 						<li>
-							<a
-								href="/weapons"
-								onClick={() => nav("/weapons")}
-							>
+							<a href="/weapons" onClick={() => nav("/weapons")}>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									fill="none"
@@ -111,7 +112,7 @@ const Weapons: Component<{}> = (props) => {
 										d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
 									></path>
 								</svg>
-							    Weapons
+								Weapons
 							</a>
 						</li>
 					</ul>

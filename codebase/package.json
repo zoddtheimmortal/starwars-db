@@ -31,6 +31,7 @@
 		"framer-motion": "^11.0.20",
 		"solid-js": "^1.8.16",
 		"supabase": "^1.150.0",
-		"tailwind-merge": "^2.2.2"
+		"tailwind-merge": "^2.2.2",
+		"vercel": "^33.7.0"
 	}
 }
