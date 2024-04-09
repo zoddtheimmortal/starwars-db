@@ -8,17 +8,17 @@ import SpeciesService from "./species.service";
 type FormData = {
 	name: string;
 	gender: string;
-	maxHeight: number;
-	maxWeight: number;
-	birthYear: number[];
+	maxHeight: string;
+	maxWeight: string;
+	birthYear: string[];
 	personality: string;
 	faction: string;
-	advLevel: number;
-	maxDroidCount: number;
-	maxWeaponCount: number;
+	advLevel: string;
+	maxDroidCount: string;
+	maxWeaponCount: string;
 	planet: string;
 	galaxy: string;
-	maxGravity: number;
+	maxGravity: string;
 	species: string;
 	language: string;
 };
@@ -35,12 +35,10 @@ const getPersonality = async () => {
 	return data?.map((item) => item.personality);
 };
 
-const getDataTest = async () => {
+const getDataTest = async (table_name: string, filters: any) => {
 	let { data, error } = await supabase.rpc("filter_by_json", {
-		table_name: "people",
-		filter: {
-			birth_planet: { op: "=", val: "Kamino" },
-		},
+		table_name: table_name,
+		filter: filters,
 	});
 	if (error) console.error(error);
 	else console.log(data);
@@ -49,41 +47,54 @@ const getDataTest = async () => {
 const getOptions = () => {
 	const [name, setName] = createSignal("");
 	const [gender, setGender] = createSignal("");
-	const [maxHeight, setMaxHeight] = createSignal(0);
-	const [maxWeight, setMaxWeight] = createSignal(0);
-	const [birthYearMin, setBirthYearMin] = createSignal(0);
-	const [birthYearMax, setBirthYearMax] = createSignal(0);
+	const [maxHeight, setMaxHeight] = createSignal("");
+	const [maxWeight, setMaxWeight] = createSignal("");
+	const [birthYearMin, setBirthYearMin] = createSignal("");
+	const [birthYearMax, setBirthYearMax] = createSignal("");
 	const [personality, setPersonality] = createSignal("");
 
 	const [faction, setFaction] = createSignal("");
-	const [advLevel, setAdvLevel] = createSignal(0);
-	const [maxDroidCount, setMaxDroidCount] = createSignal(0);
-	const [maxWeaponCount, setMaxWeaponCount] = createSignal(0);
+	const [advLevel, setAdvLevel] = createSignal("");
+	const [maxDroidCount, setMaxDroidCount] = createSignal("");
+	const [maxWeaponCount, setMaxWeaponCount] = createSignal("");
 
 	const [planet, setPlanet] = createSignal("");
 	const [galaxy, setGalaxy] = createSignal("");
-	const [maxGravity, setMaxGravity] = createSignal(0);
+	const [maxGravity, setMaxGravity] = createSignal("");
 
 	const [species, setSpecies] = createSignal("");
 	const [language, setLanguage] = createSignal("");
 
-	let data: () => FormData = () => ({
-		name: name(),
-		gender: gender(),
-		maxHeight: maxHeight(),
-		maxWeight: maxWeight(),
-		birthYear: [birthYearMin(), birthYearMax()],
-		personality: personality(),
-		faction: faction(),
-		advLevel: advLevel(),
-		maxDroidCount: maxDroidCount(),
-		maxWeaponCount: maxWeaponCount(),
-		planet: planet(),
-		galaxy: galaxy(),
-		maxGravity: maxGravity(),
-		species: species(),
-		language: language(),
-	});
+	let filters: () => FormData = () => {
+		let formData: any = {};
+
+		if (name() !== "") formData.name = { op: "=", val: name() };
+		if (gender() !== "") formData.gender = { op: "=", val: gender() };
+		if (maxHeight() !== "")
+			formData.height = { op: "<=", val: maxHeight() };
+		if (maxWeight() !== "")
+			formData.weight = { op: "<=", val: maxWeight() };
+		if (birthYearMin() !== "")
+			formData.birthYear = { op: ">=", val: birthYearMin() };
+		if (birthYearMax() !== "")
+			formData.birthYear = { op: "<=", val: birthYearMax() };
+		if (personality() !== "")
+			formData.personality = { op: "=", val: personality() };
+		if (faction() !== "") formData.faction = { op: "=", val: faction() };
+		if (advLevel() !== "") formData.advLevel = { op: "=", val: advLevel() };
+		if (maxDroidCount() !== "")
+			formData.droid_count = { op: "<=", val: maxDroidCount() };
+		if (maxWeaponCount() !== "")
+			formData.weapon_count = { op: "<=", val: maxWeaponCount() };
+		if (planet() !== "") formData.planet = { op: "=", val: planet() };
+		if (galaxy() !== "") formData.galaxy = { op: "=", val: galaxy() };
+		if (maxGravity() !== "")
+			formData.maxGravity = { op: "<=", val: maxGravity() };
+		if (species() !== "") formData.species = { op: "=", val: species() };
+		if (language() !== "") formData.language = { op: "=", val: language() };
+
+		return formData;
+	};
 
 	return (
 		<div>
@@ -93,8 +104,8 @@ const getOptions = () => {
 					<div
 						class="btn btn-primary"
 						onClick={() => {
-							console.log(data());
-							getDataTest();
+							console.log(filters());
+							getDataTest("people", filters());
 						}}
 					>
 						Test Button
