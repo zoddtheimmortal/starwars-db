@@ -59,9 +59,9 @@ let filters: () => FormData = () => {
 	if (maxHeight() !== "") formData.height = { op: "<=", val: maxHeight() };
 	if (maxWeight() !== "") formData.weight = { op: "<=", val: maxWeight() };
 	if (birthYearMin() !== "")
-		formData.birthYear = { op: ">=", val: birthYearMin() };
+		formData.birth_year = { op: ">=", val: birthYearMin() };
 	if (birthYearMax() !== "")
-		formData.birthYear = { op: "<=", val: birthYearMax() };
+		formData.birth_year = { op: "<=", val: birthYearMax() };
 	if (personality() !== "")
 		formData.personality = { op: "=", val: personality() };
 	if (faction() !== "") formData.faction = { op: "=", val: faction() };
@@ -456,7 +456,7 @@ const Options: Component<OptionProps> = (props) => {
 const PeopleCard: Component<{ ppl: any }> = (props) => {
 	const image: string = props.ppl.image ? props.ppl.image : Links.people;
 	return (
-		<div class="-z-30">
+		<div class="z-0">
 			<div class="card w-84 h-96 bg-base-100 shadow-xl image-full bg-contain">
 				<figure>
 					<img src={image} alt={props.ppl.name} class="" />
