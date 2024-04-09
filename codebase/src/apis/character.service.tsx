@@ -1,9 +1,17 @@
-import { createEffect, createResource, createSignal } from "solid-js";
+import {
+	Component,
+	For,
+	createEffect,
+	createResource,
+	createSignal,
+} from "solid-js";
 import { supabase } from "../utils/supabase";
 import Dropdown from "../components/ui/dropdown";
 import PlanetService from "./planet.service";
 import { c, s } from "vite/dist/node/types.d-aGj9QkWt";
 import SpeciesService from "./species.service";
+import { A } from "@solidjs/router";
+import Links from "../assets/links.service";
 
 type FormData = {
 	name: string;
@@ -23,6 +31,60 @@ type FormData = {
 	language: string;
 };
 
+const [name, setName] = createSignal("");
+const [gender, setGender] = createSignal("");
+const [maxHeight, setMaxHeight] = createSignal("");
+const [maxWeight, setMaxWeight] = createSignal("");
+const [birthYearMin, setBirthYearMin] = createSignal("");
+const [birthYearMax, setBirthYearMax] = createSignal("");
+const [personality, setPersonality] = createSignal("");
+
+const [faction, setFaction] = createSignal("");
+const [advLevel, setAdvLevel] = createSignal("");
+const [maxDroidCount, setMaxDroidCount] = createSignal("");
+const [maxWeaponCount, setMaxWeaponCount] = createSignal("");
+
+const [planet, setPlanet] = createSignal("");
+const [galaxy, setGalaxy] = createSignal("");
+const [maxGravity, setMaxGravity] = createSignal("");
+
+const [species, setSpecies] = createSignal("");
+const [language, setLanguage] = createSignal("");
+
+let filters: () => FormData = () => {
+	let formData: any = {};
+
+	if (name() !== "") formData.name = { op: "=", val: name() };
+	if (gender() !== "") formData.gender = { op: "=", val: gender() };
+	if (maxHeight() !== "") formData.height = { op: "<=", val: maxHeight() };
+	if (maxWeight() !== "") formData.weight = { op: "<=", val: maxWeight() };
+	if (birthYearMin() !== "")
+		formData.birthYear = { op: ">=", val: birthYearMin() };
+	if (birthYearMax() !== "")
+		formData.birthYear = { op: "<=", val: birthYearMax() };
+	if (personality() !== "")
+		formData.personality = { op: "=", val: personality() };
+	if (faction() !== "") formData.faction = { op: "=", val: faction() };
+	if (advLevel() !== "") formData.advLevel = { op: "=", val: advLevel() };
+	if (maxDroidCount() !== "")
+		formData.droid_count = { op: "<=", val: maxDroidCount() };
+	if (maxWeaponCount() !== "")
+		formData.weapon_count = { op: "<=", val: maxWeaponCount() };
+	if (planet() !== "") formData.planet = { op: "=", val: planet() };
+	if (galaxy() !== "") formData.galaxy = { op: "=", val: galaxy() };
+	if (maxGravity() !== "")
+		formData.maxGravity = { op: "<=", val: maxGravity() };
+	if (species() !== "") formData.species = { op: "=", val: species() };
+	if (language() !== "") formData.language = { op: "=", val: language() };
+
+	return formData;
+};
+
+async function getCharacters() {
+	let { data: people, error } = await supabase.from("people").select();
+	return people;
+}
+
 const getGender = async () => {
 	const { data, error } = await supabase.from("distinct_gender").select("*");
 	return data?.map((item) => item.gender);
@@ -35,67 +97,24 @@ const getPersonality = async () => {
 	return data?.map((item) => item.personality);
 };
 
-const getDataTest = async (table_name: string, filters: any) => {
+const getData = async (table_name: string, filters: any) => {
+	if (!filters || Object.keys(filters).length === 0) {
+		return getCharacters();
+	}
 	let { data, error } = await supabase.rpc("filter_by_json", {
 		table_name: table_name,
 		filter: filters,
 	});
 	if (error) console.error(error);
-	else console.log(data);
+	else return data;
 };
 
-const getOptions = () => {
-	const [name, setName] = createSignal("");
-	const [gender, setGender] = createSignal("");
-	const [maxHeight, setMaxHeight] = createSignal("");
-	const [maxWeight, setMaxWeight] = createSignal("");
-	const [birthYearMin, setBirthYearMin] = createSignal("");
-	const [birthYearMax, setBirthYearMax] = createSignal("");
-	const [personality, setPersonality] = createSignal("");
+interface OptionProps {
+	onSubmit: () => void;
+}
 
-	const [faction, setFaction] = createSignal("");
-	const [advLevel, setAdvLevel] = createSignal("");
-	const [maxDroidCount, setMaxDroidCount] = createSignal("");
-	const [maxWeaponCount, setMaxWeaponCount] = createSignal("");
-
-	const [planet, setPlanet] = createSignal("");
-	const [galaxy, setGalaxy] = createSignal("");
-	const [maxGravity, setMaxGravity] = createSignal("");
-
-	const [species, setSpecies] = createSignal("");
-	const [language, setLanguage] = createSignal("");
-
-	let filters: () => FormData = () => {
-		let formData: any = {};
-
-		if (name() !== "") formData.name = { op: "=", val: name() };
-		if (gender() !== "") formData.gender = { op: "=", val: gender() };
-		if (maxHeight() !== "")
-			formData.height = { op: "<=", val: maxHeight() };
-		if (maxWeight() !== "")
-			formData.weight = { op: "<=", val: maxWeight() };
-		if (birthYearMin() !== "")
-			formData.birthYear = { op: ">=", val: birthYearMin() };
-		if (birthYearMax() !== "")
-			formData.birthYear = { op: "<=", val: birthYearMax() };
-		if (personality() !== "")
-			formData.personality = { op: "=", val: personality() };
-		if (faction() !== "") formData.faction = { op: "=", val: faction() };
-		if (advLevel() !== "") formData.advLevel = { op: "=", val: advLevel() };
-		if (maxDroidCount() !== "")
-			formData.droid_count = { op: "<=", val: maxDroidCount() };
-		if (maxWeaponCount() !== "")
-			formData.weapon_count = { op: "<=", val: maxWeaponCount() };
-		if (planet() !== "") formData.planet = { op: "=", val: planet() };
-		if (galaxy() !== "") formData.galaxy = { op: "=", val: galaxy() };
-		if (maxGravity() !== "")
-			formData.maxGravity = { op: "<=", val: maxGravity() };
-		if (species() !== "") formData.species = { op: "=", val: species() };
-		if (language() !== "") formData.language = { op: "=", val: language() };
-
-		return formData;
-	};
-
+const Options: Component<OptionProps> = (props) => {
+	const { onSubmit } = props;
 	return (
 		<div>
 			<div class="card w-full bg-base-200 shadow-sm">
@@ -104,11 +123,11 @@ const getOptions = () => {
 					<div
 						class="btn btn-primary"
 						onClick={() => {
+							onSubmit();
 							console.log(filters());
-							getDataTest("people", filters());
 						}}
 					>
-						Test Button
+						Apply Filters
 					</div>
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 						<div>
@@ -434,35 +453,104 @@ const getOptions = () => {
 	);
 };
 
-const getFilterDrawer: Component<{}> = (props) => {
+const PeopleCard: Component<{ ppl: any }> = (props) => {
+	const image: string = props.ppl.image ? props.ppl.image : Links.people;
+	return (
+		<div class="-z-30">
+			<div class="card w-84 h-96 bg-base-100 shadow-xl image-full bg-contain">
+				<figure>
+					<img src={image} alt={props.ppl.name} class="" />
+				</figure>
+				<div class="card-body">
+					<h2 class="card-title font-bold text-3xl">
+						{props.ppl.name}
+					</h2>
+					<code>
+						<div>Birth Year: {props.ppl.birth_year}</div>
+						<div>Faction: {props.ppl.faction}</div>
+						<div>Species: {props.ppl.species}</div>
+						<div>Birth Planet: {props.ppl.birth_planet}</div>
+					</code>
+					<div class="card-actions justify-end mt-1">
+						<a
+							href={`/character/${props.ppl.pin}`}
+							class="btn btn-primary"
+						>
+							Know More
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+};
+
+const getFilterDrawer: Component<{}> = () => {
+	const [results, { refetch }] = createResource(() =>
+		getData("people", filters())
+	);
+
+	const clearFilters = () => {
+		setName("");
+		setGender("");
+		setMaxHeight("");
+		setMaxWeight("");
+		setBirthYearMin("");
+		setBirthYearMax("");
+		setPersonality("");
+		setFaction("");
+		setAdvLevel("");
+		setMaxDroidCount("");
+		setMaxWeaponCount("");
+		setPlanet("");
+		setGalaxy("");
+		setMaxGravity("");
+		setSpecies("");
+		setLanguage("");
+		refetch();
+	};
+
 	return (
 		<div>
 			<div class="drawer">
 				<input id="my-drawer" type="checkbox" class="drawer-toggle" />
 				<div class="drawer-content">
-					{/* <!-- Page content here --> */}
 					<label
 						for="my-drawer"
-						class="btn btn-primary drawer-button"
+						class="btn drawer-button drawer-button-close mx-4 mb-4"
 					>
-						Open drawer
+						Open Filters
 					</label>
+					<div class="btn mx-4 mb-4" onClick={() => clearFilters()}>
+						Clear Filters
+					</div>
+					{results() ? (
+						results() && results().length > 0 ? (
+							<div class="z-0 mx-3 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+								<For each={results()}>
+									{(ppl) => <PeopleCard ppl={ppl} />}
+								</For>
+							</div>
+						) : (
+							<div>
+								No Results Found, Please Change The Filters
+							</div>
+						)
+					) : (
+						<div class="hero min-h-screen">
+							<span class="loading loading-dots loading-lg"></span>
+						</div>
+					)}
 				</div>
 				<div class="drawer-side">
 					<label
 						for="my-drawer"
 						aria-label="close sidebar"
-						class="drawer-overlay"
+						class="drawer-overlay z-40"
 					></label>
-					<ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-						HHHH
-						<li>
-							<a>Sidebar Item 1</a>
-						</li>
-						<li>
-							<a>Sidebar Item 2</a>
-						</li>
-					</ul>
+					<div class="z-40">
+						<Options onSubmit={refetch} />
+					</div>
 				</div>
 			</div>
 		</div>
@@ -470,7 +558,7 @@ const getFilterDrawer: Component<{}> = (props) => {
 };
 
 const CharacterService = {
-	getOptions,
+	Options,
 	getGender,
 	getPersonality,
 	getFilterDrawer,
