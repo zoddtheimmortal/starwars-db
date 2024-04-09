@@ -17,7 +17,7 @@ const handleFilterChange = (selectedOption: string) => {
 
 	switch (selectedOption) {
 		case "Characters":
-			filterOptions = CharacterService.getFilterDrawer();
+			filterOptions = CharacterService.getOptions();
 			break;
 		case "Factions":
 			filterOptions = FactionService.getOptions();

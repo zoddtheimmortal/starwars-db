@@ -146,9 +146,7 @@ const getOptions = () => {
 								max="250"
 								value="200"
 								class="range range-sm"
-								onChange={(e) =>
-									setMaxHeight(Number(e.target.value))
-								}
+								onChange={(e) => setMaxHeight(e.target.value)}
 							/>
 							<div class="w-full flex justify-between text-xs px-2">
 								<span>30</span>
@@ -165,9 +163,7 @@ const getOptions = () => {
 								max="200"
 								value="180"
 								class="range range-sm"
-								onChange={(e) =>
-									setMaxWeight(Number(e.target.value))
-								}
+								onChange={(e) => setMaxWeight(e.target.value)}
 							/>
 							<div class="w-full flex justify-between text-xs px-2">
 								<span>0</span>
@@ -188,9 +184,7 @@ const getOptions = () => {
 											placeholder="Min Year"
 											class="input input-bordered w-full max-w-xs"
 											onChange={(e) =>
-												setBirthYearMin(
-													Number(e.target.value)
-												)
+												setBirthYearMin(e.target.value)
 											}
 										/>
 										<div class="label">
@@ -206,9 +200,7 @@ const getOptions = () => {
 											placeholder="Max Year"
 											class="input input-bordered w-full max-w-xs"
 											onChange={(e) =>
-												setBirthYearMax(
-													Number(e.target.value)
-												)
+												setBirthYearMax(e.target.value)
 											}
 										/>
 										<div class="label">
@@ -316,9 +308,7 @@ const getOptions = () => {
 											class="range range-sm"
 											step="250"
 											onChange={(e) =>
-												setMaxDroidCount(
-													Number(e.target.value)
-												)
+												setMaxDroidCount(e.target.value)
 											}
 										/>
 										<div class="w-full flex justify-between text-xs px-2">
@@ -341,7 +331,7 @@ const getOptions = () => {
 											step="250"
 											onChange={(e) =>
 												setMaxWeaponCount(
-													Number(e.target.value)
+													e.target.value
 												)
 											}
 										/>
@@ -368,9 +358,7 @@ const getOptions = () => {
 												type="text"
 												placeholder="Planet Name"
 												class="input input-bordered w-full max-w-xs"
-												onChange={(e) =>
-													setPlanet(e.target.value)
-												}
+												onChange={(e) => e.target.value}
 											/>
 										</label>
 									</div>
@@ -395,9 +383,7 @@ const getOptions = () => {
 											class="range range-sm"
 											step="0.1"
 											onChange={(e) =>
-												setMaxGravity(
-													Number(e.target.value)
-												)
+												setMaxGravity(e.target.value)
 											}
 										/>
 										<div class="w-full flex justify-between text-xs px-2">
