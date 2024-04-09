@@ -35,6 +35,17 @@ const getPersonality = async () => {
 	return data?.map((item) => item.personality);
 };
 
+const getDataTest = async () => {
+	let { data, error } = await supabase.rpc("filter_by_json", {
+		table_name: "people",
+		filter: {
+			birth_planet: { op: "=", val: "Kamino" },
+		},
+	});
+	if (error) console.error(error);
+	else console.log(data);
+};
+
 const getOptions = () => {
 	const [name, setName] = createSignal("");
 	const [gender, setGender] = createSignal("");
@@ -79,12 +90,15 @@ const getOptions = () => {
 			<div class="card w-full bg-base-200 shadow-sm">
 				<div class="card-body">
 					<h2 class="card-title">Character Filtering Options</h2>
-					{/* <div
+					<div
 						class="btn btn-primary"
-						onClick={() => console.log(data())}
+						onClick={() => {
+							console.log(data());
+							getDataTest();
+						}}
 					>
 						Test Button
-					</div> */}
+					</div>
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 						<div>
 							<label class="form-control w-full max-w-xs">
