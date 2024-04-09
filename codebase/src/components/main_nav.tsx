@@ -6,7 +6,7 @@ const Nav: Component<{}> = (props) => {
 	const navigate = useNavigate();
 
 	return (
-		<div class="navbar bg-base-300">
+		<div class="navbar bg-base-300 z-20">
 			<div class="navbar-start">
 				<div class="dropdown">
 					<div

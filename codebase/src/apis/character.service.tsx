@@ -8,9 +8,7 @@ import {
 import { supabase } from "../utils/supabase";
 import Dropdown from "../components/ui/dropdown";
 import PlanetService from "./planet.service";
-import { c, s } from "vite/dist/node/types.d-aGj9QkWt";
 import SpeciesService from "./species.service";
-import { A } from "@solidjs/router";
 import Links from "../assets/links.service";
 
 type FormData = {

@@ -24,7 +24,7 @@ const FactionCard: Component<{ fct: any }> = (props) => {
 	return (
 		<div>
 			<div
-				class={`card w-84 h-96 bg-base-100 shadow-xl image-full bg-contain ${styles.card}`}
+				class={`z-0 card w-84 h-96 bg-base-100 shadow-xl image-full bg-contain ${styles.card}`}
 			>
 				<figure>
 					<img src={props.fct.image} alt={props.fct.name} class="" />

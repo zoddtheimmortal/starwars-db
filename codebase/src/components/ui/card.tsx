@@ -7,7 +7,7 @@ const Card: Component<{ title: string; src: string; children: JSX.Element }> = (
 	const navigate = useNavigate();
 	return (
 		<div>
-			<div class="card hover:scale-105 w-84 h-96 bg-base-100 shadow-xl image-full bg-contain">
+			<div class="z-0 card hover:scale-105 w-84 h-96 bg-base-100 shadow-xl image-full bg-contain">
 				<figure>
 					<img src={props.src} alt={props.title} class="size-full" />
 				</figure>

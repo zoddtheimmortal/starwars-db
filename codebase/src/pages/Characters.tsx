@@ -31,7 +31,7 @@ const PeopleCard: Component<{ ppl: any }> = (props) => {
 	const image: string = props.ppl.image ? props.ppl.image : Links.people;
 	return (
 		<div>
-			<div class="card w-84 h-96 bg-base-100 shadow-xl image-full bg-contain">
+			<div class="z-0 card w-84 h-96 bg-base-100 shadow-xl image-full bg-contain">
 				<figure>
 					<img src={image} alt={props.ppl.name} class="" />
 				</figure>
