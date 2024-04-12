@@ -24,6 +24,8 @@ type FormData = {
 	language: string;
 };
 
+// spaghetti code, but works
+
 const [name, setName] = createSignal("");
 const [gender, setGender] = createSignal("");
 const [maxHeight, setMaxHeight] = createSignal("");
@@ -451,6 +453,8 @@ const Options: Component<OptionProps> = (props) => {
 	);
 };
 
+// wtf is this
+
 const PeopleCard: Component<{ ppl: any }> = (props) => {
 	const image: string = props.ppl.image ? props.ppl.image : Links.people;
 	return (
@@ -513,15 +517,24 @@ const getFilterDrawer: Component<{}> = () => {
 				<div class="drawer-content">
 					<label
 						for="my-drawer"
-						class="btn drawer-button drawer-button-close mx-4 mb-4"
+						class="btn drawer-button drawer-button-close mx-4 mb-2"
 					>
 						Open Filters
 					</label>
-					<div class="btn mx-4 mb-4" onClick={() => clearFilters()}>
+					<div class="btn mx-4 mb-2" onClick={() => clearFilters()}>
 						Clear Filters
 					</div>
+					{results() && results().length > 0 ? (
+						<div class="text-xl mb-4">
+							Found{" "}
+							<span class="font-bold">{results()?.length}</span>{" "}
+							Results!
+						</div>
+					) : (
+						<></>
+					)}
 					{results() ? (
-						results() && results().length > 0 ? (
+						results().length > 0 ? (
 							<div class="z-0 mx-3 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 								<For each={results()}>
 									{(ppl) => <PeopleCard ppl={ppl} />}
