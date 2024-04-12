@@ -509,6 +509,45 @@ async function callJoinMultipleTables() {
 	}
 }
 
+async function callFilterJoin() {
+	const { data, error } = await supabase.rpc("filter_and_join", {
+		tables: ["faction", "species", "planet", "people"],
+		join_cond: [
+			{
+				table1: "people",
+				col1: "faction",
+				table2: "faction",
+				col2: "name",
+			},
+			{
+				table1: "species",
+				col1: "name",
+				table2: "people",
+				col2: "species",
+			},
+			{
+				table1: "planet",
+				col1: "name",
+				table2: "people",
+				col2: "birth_planet",
+			},
+		],
+		filters: {
+			height: { op: "<=", val: "200" },
+			droid_count: { op: "<", val: "2000" },
+			population: { op: ">", val: "1000000" },
+			gender: { op: "=", val: "Female" },
+			species: { op: "=", val: "Human" },
+		},
+	});
+
+	if (error) {
+		console.error("Error: ", error);
+	} else {
+		console.log("Data: ", data);
+	}
+}
+
 const getFilterDrawer: Component<{}> = () => {
 	const [results, { refetch }] = createResource(() =>
 		getData("people", filters())
@@ -548,10 +587,7 @@ const getFilterDrawer: Component<{}> = () => {
 					<div class="btn mx-4 mb-4" onClick={() => clearFilters()}>
 						Clear Filters
 					</div>
-					<div
-						class="btn mx-4 mb-4"
-						onClick={() => callJoinMultipleTables()}
-					>
+					<div class="btn mx-4 mb-4" onClick={() => callFilterJoin()}>
 						Test Button
 					</div>
 					{results() ? (
