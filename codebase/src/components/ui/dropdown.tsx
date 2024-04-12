@@ -19,7 +19,10 @@ const Dropdown: Component<DropdownProps> = (props) => {
 			<select
 				class="select select-bordered w-full max-w-xs"
 				onInput={(e) => {
-					setOptions(e.currentTarget.value);
+					{
+						if (e.target.value === "None") setOptions("");
+						else setOptions(e.target.value);
+					}
 				}}
 			>
 				<option disabled selected>
@@ -28,6 +31,7 @@ const Dropdown: Component<DropdownProps> = (props) => {
 				{options()?.map((option: string & {}) => (
 					<option>{option}</option>
 				))}
+				<option>None</option>
 			</select>
 		</div>
 	);

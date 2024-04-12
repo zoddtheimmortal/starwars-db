@@ -3,36 +3,28 @@ import { supabase } from "../utils/supabase";
 import Dropdown from "../components/ui/dropdown";
 import PlanetService from "./planet.service";
 
-const getGender = async () => {
-	const { data, error } = await supabase.from("distinct_gender").select("*");
-	return data?.map((item) => item.gender);
+const getStarshipNames = async () => {
+	const { data, error } = await supabase.from("starship").select("name");
+	return data?.map((item) => item.name);
 };
 
 const getOwner = async () => {
-	const { data, error } = await supabase
-		.from("distinct_owner")
-		.select("*");
+	const { data, error } = await supabase.from("distinct_owner").select("*");
 	return data?.map((item) => item.manufacturer);
 };
 
 const getFuel = async () => {
-	const { data, error } = await supabase
-		.from("distinct_fuel")
-		.select("*");
+	const { data, error } = await supabase.from("distinct_fuel").select("*");
 	return data?.map((item) => item.fuel_type);
 };
 
 const getPayload = async () => {
-	const { data, error } = await supabase
-		.from("distinct_payload")
-		.select("*");
+	const { data, error } = await supabase.from("distinct_payload").select("*");
 	return data?.map((item) => item.payload);
 };
 
 const getCrew = async () => {
-	const { data, error } = await supabase
-		.from("distinct_crew")
-		.select("*");
+	const { data, error } = await supabase.from("distinct_crew").select("*");
 	return data?.map((item) => item.crew);
 };
 
@@ -46,7 +38,9 @@ const getOptions = () => {
 						<div>
 							<label class="</div>form-control w-full max-w-xs">
 								<div class="label">
-									<span class="label-text">Search Ship Name</span>
+									<span class="label-text">
+										Search Ship Name
+									</span>
 								</div>
 								<input
 									type="text"
@@ -61,15 +55,14 @@ const getOptions = () => {
 							</label>
 						</div>
 						<label class="</div>form-control w-full max-w-xs">
-                        <Dropdown
-								name="Fuel Type"
-								getOptions={getFuel}
-							/>
-							</label>
-						
+							<Dropdown name="Fuel Type" getOptions={getFuel} />
+						</label>
+
 						<div>
 							<div class="label">
-								<span class="label-text">Set Max Fuel Capacity</span>
+								<span class="label-text">
+									Set Max Fuel Capacity
+								</span>
 							</div>
 							<input
 								type="range"
@@ -133,10 +126,10 @@ const getOptions = () => {
 										</div>
 									</div>
 								</div>
-                                <Dropdown
-											name="Payload"
-											getOptions={getPayload}
-										/>
+								<Dropdown
+									name="Payload"
+									getOptions={getPayload}
+								/>
 							</label>
 						</div>
 						<div>
@@ -144,12 +137,9 @@ const getOptions = () => {
 								name="Manufacturer"
 								getOptions={getOwner}
 							/>
-                          <div style="margin-top: 47px;">
-                          <Dropdown
-								name="Crew"
-								getOptions={getCrew}
-							/>
-                            </div>  
+							<div style="margin-top: 47px;">
+								<Dropdown name="Crew" getOptions={getCrew} />
+							</div>
 						</div>
 					</div>
 					<div>
@@ -249,8 +239,6 @@ const getOptions = () => {
 								</div>
 							</div>
 						</div>
-						
-					
 					</div>
 				</div>
 			</div>
@@ -260,11 +248,11 @@ const getOptions = () => {
 
 const StarshipService = {
 	getOptions,
-	getGender,
 	getOwner,
-    getFuel,
-    getPayload,
-    getCrew,
+	getFuel,
+	getPayload,
+	getCrew,
+	getStarshipNames,
 };
 
 export default StarshipService;

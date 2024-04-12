@@ -1,15 +1,10 @@
-import {
-	Component,
-	For,
-	createEffect,
-	createResource,
-	createSignal,
-} from "solid-js";
+import { Component, For, createResource, createSignal } from "solid-js";
 import { supabase } from "../utils/supabase";
 import Dropdown from "../components/ui/dropdown";
 import PlanetService from "./planet.service";
 import SpeciesService from "./species.service";
 import Links from "../assets/links.service";
+import FactionService from "./faction.service";
 
 type FormData = {
 	name: string;
@@ -63,15 +58,15 @@ let filters: () => FormData = () => {
 	if (personality() !== "")
 		formData.personality = { op: "=", val: personality() };
 	if (faction() !== "") formData.faction = { op: "=", val: faction() };
-	if (advLevel() !== "") formData.advLevel = { op: "=", val: advLevel() };
+	if (advLevel() !== "")
+		formData.advancement_level = { op: "=", val: "Type " + advLevel() };
 	if (maxDroidCount() !== "")
 		formData.droid_count = { op: "<=", val: maxDroidCount() };
 	if (maxWeaponCount() !== "")
 		formData.weapon_count = { op: "<=", val: maxWeaponCount() };
-	if (planet() !== "") formData.planet = { op: "=", val: planet() };
+	if (planet() !== "") formData.birth_planet = { op: "=", val: planet() };
 	if (galaxy() !== "") formData.galaxy = { op: "=", val: galaxy() };
-	if (maxGravity() !== "")
-		formData.maxGravity = { op: "<=", val: maxGravity() };
+	if (maxGravity() !== "") formData.gravity = { op: "<=", val: maxGravity() };
 	if (species() !== "") formData.species = { op: "=", val: species() };
 	if (language() !== "") formData.language = { op: "=", val: language() };
 
@@ -95,16 +90,45 @@ const getPersonality = async () => {
 	return data?.map((item) => item.personality);
 };
 
-const getData = async (table_name: string, filters: any) => {
+const getData = async (filters: any) => {
 	if (!filters || Object.keys(filters).length === 0) {
 		return getCharacters();
 	}
-	let { data, error } = await supabase.rpc("filter_by_json", {
-		table_name: table_name,
-		filter: filters,
+
+	const table_names = ["faction", "species", "planet", "people"];
+	const join_conditions = [
+		{
+			table1: "people",
+			col1: "faction",
+			table2: "faction",
+			col2: "name",
+		},
+		{
+			table1: "species",
+			col1: "name",
+			table2: "people",
+			col2: "species",
+		},
+		{
+			table1: "planet",
+			col1: "name",
+			table2: "people",
+			col2: "birth_planet",
+		},
+	];
+
+	const { data, error } = await supabase.rpc("filter_and_join", {
+		tables: table_names,
+		join_cond: join_conditions,
+		filters: filters,
 	});
-	if (error) console.error(error);
-	else return data;
+
+	if (error) {
+		console.error("Error: ", error);
+	} else {
+		console.log("Data: ", data);
+		return data;
+	}
 };
 
 interface OptionProps {
@@ -242,23 +266,13 @@ const Options: Component<OptionProps> = (props) => {
 							<div class="card-body">
 								<h2 class="card-title">Faction</h2>
 								<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-									<div>
-										<label class="form-control w-full max-w-xs">
-											<div class="label">
-												<span class="label-text">
-													Filter With Faction
-												</span>
-											</div>
-											<input
-												type="text"
-												placeholder="Faction Name"
-												class="input input-bordered w-full max-w-xs"
-												onChange={(e) =>
-													setFaction(e.target.value)
-												}
-											/>
-										</label>
-									</div>
+									<Dropdown
+										name="Faction"
+										getOptions={
+											FactionService.getFactionNames
+										}
+										setOptions={setFaction}
+									/>
 									<div>
 										<label class="form-control w-full max-w-xs">
 											<div class="label">
@@ -365,19 +379,13 @@ const Options: Component<OptionProps> = (props) => {
 								<h2 class="card-title">Planet</h2>
 								<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 									<div>
-										<label class="form-control w-full max-w-xs">
-											<div class="label">
-												<span class="label-text">
-													Filter With Planet
-												</span>
-											</div>
-											<input
-												type="text"
-												placeholder="Planet Name"
-												class="input input-bordered w-full max-w-xs"
-												onChange={(e) => e.target.value}
-											/>
-										</label>
+										<Dropdown
+											name="Planet"
+											getOptions={
+												PlanetService.getPlanetNames
+											}
+											setOptions={setPlanet}
+										/>
 									</div>
 									<div>
 										<Dropdown
@@ -416,21 +424,13 @@ const Options: Component<OptionProps> = (props) => {
 								<h2 class="card-title">Species</h2>
 								<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 									<div>
-										<label class="form-control w-full max-w-xs">
-											<div class="label">
-												<span class="label-text">
-													Filter With Species
-												</span>
-											</div>
-											<input
-												type="text"
-												placeholder="Species Name"
-												class="input input-bordered w-full max-w-xs"
-												onChange={(e) =>
-													setSpecies(e.target.value)
-												}
-											/>
-										</label>
+										<Dropdown
+											name="Species"
+											getOptions={
+												SpeciesService.getSpeciesNames
+											}
+											setOptions={setSpecies}
+										/>
 									</div>
 									<div>
 										<Dropdown
@@ -483,75 +483,8 @@ const PeopleCard: Component<{ ppl: any }> = (props) => {
 	);
 };
 
-async function callJoinMultipleTables() {
-	const { data, error } = await supabase.rpc("join_tables", {
-		tables: ["people", "species", "faction"],
-		join_cond: [
-			{
-				table1: "people",
-				table2: "species",
-				col1: "species",
-				col2: "name",
-			},
-			{
-				table1: "people",
-				table2: "faction",
-				col1: "faction",
-				col2: "name",
-			},
-		],
-	});
-
-	if (error) {
-		console.error("Error: ", error);
-	} else {
-		console.log("Data: ", data);
-	}
-}
-
-async function callFilterJoin() {
-	const { data, error } = await supabase.rpc("filter_and_join", {
-		tables: ["faction", "species", "planet", "people"],
-		join_cond: [
-			{
-				table1: "people",
-				col1: "faction",
-				table2: "faction",
-				col2: "name",
-			},
-			{
-				table1: "species",
-				col1: "name",
-				table2: "people",
-				col2: "species",
-			},
-			{
-				table1: "planet",
-				col1: "name",
-				table2: "people",
-				col2: "birth_planet",
-			},
-		],
-		filters: {
-			height: { op: "<=", val: "200" },
-			droid_count: { op: "<", val: "2000" },
-			population: { op: ">", val: "1000000" },
-			gender: { op: "=", val: "Female" },
-			species: { op: "=", val: "Human" },
-		},
-	});
-
-	if (error) {
-		console.error("Error: ", error);
-	} else {
-		console.log("Data: ", data);
-	}
-}
-
 const getFilterDrawer: Component<{}> = () => {
-	const [results, { refetch }] = createResource(() =>
-		getData("people", filters())
-	);
+	const [results, { refetch }] = createResource(() => getData(filters()));
 
 	const clearFilters = () => {
 		setName("");
@@ -586,9 +519,6 @@ const getFilterDrawer: Component<{}> = () => {
 					</label>
 					<div class="btn mx-4 mb-4" onClick={() => clearFilters()}>
 						Clear Filters
-					</div>
-					<div class="btn mx-4 mb-4" onClick={() => callFilterJoin()}>
-						Test Button
 					</div>
 					{results() ? (
 						results() && results().length > 0 ? (

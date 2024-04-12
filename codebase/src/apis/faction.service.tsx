@@ -3,9 +3,10 @@ import { supabase } from "../utils/supabase";
 import Dropdown from "../components/ui/dropdown";
 import PlanetService from "./planet.service";
 
-const getGender = async () => {
-	const { data, error } = await supabase.from("distinct_gender").select("*");
-	return data?.map((item) => item.gender);
+const getFactionNames = async () => {
+	const { data, error } = await supabase.from("faction").select("name");
+	console.log(data);
+	return data?.map((item) => item.name);
 };
 
 const getPersonality = async () => {
@@ -25,7 +26,9 @@ const getOptions = () => {
 						<div>
 							<label class="</div>form-control w-full max-w-xs">
 								<div class="label">
-									<span class="label-text">Search by Name</span>
+									<span class="label-text">
+										Search by Name
+									</span>
 								</div>
 								<input
 									type="text"
@@ -38,16 +41,15 @@ const getOptions = () => {
 									</span>
 								</div>
 							</label>
-							<div>
-
-							</div>
-
+							<div></div>
 						</div>
 
 						<div>
 							<div>
 								<div class="label">
-									<span class="label-text">Set Max Weapon Count</span>
+									<span class="label-text">
+										Set Max Weapon Count
+									</span>
 								</div>
 								<input
 									type="range"
@@ -62,7 +64,9 @@ const getOptions = () => {
 								</div>
 							</div>
 							<div class="label">
-								<span class="label-text">Set Max Droid Count</span>
+								<span class="label-text">
+									Set Max Droid Count
+								</span>
 							</div>
 							<input
 								type="range"
@@ -78,7 +82,9 @@ const getOptions = () => {
 						</div>
 						<label class="</div>form-control w-full max-w-xs">
 							<div class="label">
-								<span class="label-text">Search by Base Planet</span>
+								<span class="label-text">
+									Search by Base Planet
+								</span>
 							</div>
 							<input
 								type="text"
@@ -161,8 +167,6 @@ const getOptions = () => {
 									</div>
 								</div>
 							</label>
-
-
 						</div>
 					</div>
 					<div>
@@ -185,11 +189,12 @@ const getOptions = () => {
 											/>
 										</label>
 										<div>
-											<Dropdown name="Gender" getOptions={getGender} />
+											<Dropdown
+												name="Gender"
+												getOptions={getGender}
+											/>
 										</div>
 									</div>
-
-
 								</div>
 							</div>
 						</div>
@@ -281,10 +286,10 @@ const getOptions = () => {
 	);
 };
 
-const StarshipService = {
+const FactionService = {
 	getOptions,
-	getGender,
 	getPersonality,
+	getFactionNames,
 };
 
-export default StarshipService;
+export default FactionService;
