@@ -1,15 +1,19 @@
--- simple dynamic filter function for jsonb columns
+-- filterByJson function
 CREATE OR REPLACE FUNCTION filter_by_json(table_name text, filter json)
 RETURNS SETOF json AS $$
 DECLARE
     key text;
-    value text;
+    value json;
+    op text;
+    val text;
     where_clause text = '';
     query text;
 BEGIN
-    FOR key, value IN SELECT * FROM json_each_text(filter)
+    FOR key, value IN SELECT * FROM json_each(filter)
     LOOP
-        where_clause := where_clause || format('%I = %L AND ', key, value);
+        op := value ->> 'op';
+        val := value ->> 'val';
+        where_clause := where_clause || format('%I %s %L AND ', key, op, val);
     END LOOP;
 
     where_clause := substring(where_clause from 1 for length(where_clause) - 5); -- Remove the trailing ' AND '
@@ -20,32 +24,52 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
---dynamic filter with multiple conditions
-
---join and filter
-CREATE OR REPLACE FUNCTION join_and_filter_tables(tables text[], join_columns text[], filters json[])
+--working join
+CREATE OR REPLACE FUNCTION join_tables(
+    table1_name text, 
+    table1_join_column text, 
+    table2_name text, 
+    table2_join_column text
+)
 RETURNS SETOF json AS $$
 DECLARE
-    i integer;
-    temp_table_name text;
     query text;
 BEGIN
-    -- Apply each filter to the corresponding table
-    FOR i IN 1 .. array_length(tables, 1)
-    LOOP
-        temp_table_name := format('temp_filter%d', i);
-        EXECUTE format('CREATE TEMP TABLE %I ON COMMIT DROP AS SELECT row_to_json(t) FROM (SELECT * FROM filter_by_json(%L, %L)) t', 
-                       temp_table_name, tables[i], filters[i]::text);
+    query := format('SELECT row_to_json(t) FROM (SELECT * FROM %I JOIN %I ON %I.%I = %I.%I) t', 
+                    table1_name, 
+                    table2_name, 
+                    table1_name, 
+                    table1_join_column, 
+                    table2_name, 
+                    table2_join_column);
+    RETURN QUERY EXECUTE query;
+END;
+$$ LANGUAGE plpgsql;
+
+--working join with multiple tables
+CREATE OR REPLACE FUNCTION join_tables(
+    tables json, 
+    join_cond json
+)
+RETURNS SETOF json AS $$
+DECLARE
+    query text;
+    join_conditions text = '';
+    i integer;
+BEGIN
+    FOR i IN 0..json_array_length(join_cond) - 1 LOOP
+        join_conditions := join_conditions || format('%s.%s = %s.%s AND ', 
+            (join_cond -> i -> 'table1')::text, 
+            (join_cond -> i -> 'col1')::text, 
+            (join_cond -> i -> 'table2')::text, 
+            (join_cond -> i -> 'col2')::text);
     END LOOP;
 
-    -- Construct the JOIN query
-    query := 'SELECT row_to_json(t) FROM (SELECT * FROM temp_filter1';
-    FOR i IN 2 .. array_length(tables, 1)
-    LOOP
-        temp_table_name := format('temp_filter%d', i);
-        query := query || format(' JOIN %I ON temp_filter1.%I = %I.%I', temp_table_name, join_columns[i-1], temp_table_name, join_columns[i-1]);
-    END LOOP;
-    query := query || ') t';
+    join_conditions := substring(join_conditions from 1 for length(join_conditions) - 4); -- remove the last ' AND '
+
+    query := format('SELECT row_to_json(t) FROM (SELECT * FROM %s WHERE %s) t', 
+                    array_to_string(array(select json_array_elements_text(tables)::text), ', '), 
+                    join_conditions);
 
     RETURN QUERY EXECUTE query;
 END;

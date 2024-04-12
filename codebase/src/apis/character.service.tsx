@@ -483,6 +483,32 @@ const PeopleCard: Component<{ ppl: any }> = (props) => {
 	);
 };
 
+async function callJoinMultipleTables() {
+	const { data, error } = await supabase.rpc("join_tables", {
+		tables: ["people", "species", "faction"],
+		join_cond: [
+			{
+				table1: "people",
+				table2: "species",
+				col1: "species",
+				col2: "name",
+			},
+			{
+				table1: "people",
+				table2: "faction",
+				col1: "faction",
+				col2: "name",
+			},
+		],
+	});
+
+	if (error) {
+		console.error("Error: ", error);
+	} else {
+		console.log("Data: ", data);
+	}
+}
+
 const getFilterDrawer: Component<{}> = () => {
 	const [results, { refetch }] = createResource(() =>
 		getData("people", filters())
@@ -521,6 +547,12 @@ const getFilterDrawer: Component<{}> = () => {
 					</label>
 					<div class="btn mx-4 mb-4" onClick={() => clearFilters()}>
 						Clear Filters
+					</div>
+					<div
+						class="btn mx-4 mb-4"
+						onClick={() => callJoinMultipleTables()}
+					>
+						Test Button
 					</div>
 					{results() ? (
 						results() && results().length > 0 ? (
