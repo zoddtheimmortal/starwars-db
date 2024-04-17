@@ -23,7 +23,7 @@ const handleFilterChange = (selectedOption: string) => {
 			filterOptions = FactionService.getFilterDrawer();
 			break;
 		case "Starships":
-			filterOptions = StarshipService.getOptions();
+			filterOptions = StarshipService.getFilterDrawer();
 			break;
 		default:
 			filterOptions = <div>Invalid Option</div>;

@@ -1,4 +1,4 @@
-import { createResource } from "solid-js";
+import { Component, createResource } from "solid-js";
 import { supabase } from "../utils/supabase";
 import Dropdown from "../components/ui/dropdown";
 import PlanetService from "./planet.service";
@@ -28,7 +28,7 @@ const getCrew = async () => {
 	return data?.map((item) => item.crew);
 };
 
-const getOptions = () => {
+const Options: Component<{}> = () => {
 	return (
 		<div>
 			<div class="card w-full bg-base-200 shadow-sm">
@@ -246,8 +246,87 @@ const getOptions = () => {
 	);
 };
 
+const getFilterDrawer: Component<{}> = () => {
+	// const [results, { refetch }] = createResource(() => getData(filters()));
+
+	// const clearFilters = () => {
+	// 	setName("");
+	// 	setGender("");
+	// 	setMaxHeight("");
+	// 	setMaxWeight("");
+	// 	setBirthYearMin("");
+	// 	setBirthYearMax("");
+	// 	setPersonality("");
+	// 	setFaction("");
+	// 	setAdvLevel("");
+	// 	setMaxDroidCount("");
+	// 	setMaxWeaponCount("");
+	// 	setPlanet("");
+	// 	setGalaxy("");
+	// 	setMaxGravity("");
+	// 	setSpecies("");
+	// 	setLanguage("");
+	// 	refetch();
+	// };
+
+	return (
+		<div>
+			<div class="drawer">
+				<input id="my-drawer" type="checkbox" class="drawer-toggle" />
+				<div class="drawer-content">
+					<label
+						for="my-drawer"
+						class="btn drawer-button drawer-button-close mx-4 mb-2"
+					>
+						Open Filters
+					</label>
+					<div class="btn mx-4 mb-2" onClick={() => clearFilters()}>
+						Clear Filters
+					</div>
+					{/* {results() && results().length > 0 ? (
+						<div class="text-xl mb-4">
+							Found{" "}
+							<span class="font-bold">{results()?.length}</span>{" "}
+							Results!
+						</div>
+					) : (
+						<></>
+					)} */}
+					{/* {results() ? (
+						results().length > 0 ? (
+							<div class="z-0 mx-3 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+								<For each={results()}>
+									{(ppl) => <PeopleCard ppl={ppl} />}
+								</For>
+							</div>
+						) : (
+							<div>
+								No Results Found, Please Change The Filters
+							</div>
+						)
+					) : (
+						<div class="hero min-h-screen">
+							<span class="loading loading-dots loading-lg"></span>
+						</div>
+					)} */}
+				</div>
+				<div class="drawer-side">
+					<label
+						for="my-drawer"
+						aria-label="close sidebar"
+						class="drawer-overlay z-40"
+					></label>
+					<div class="z-40">
+						<Options />
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+};
+
 const StarshipService = {
-	getOptions,
+	getFilterDrawer,
 	getOwner,
 	getFuel,
 	getPayload,
