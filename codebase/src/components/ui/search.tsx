@@ -1,3 +1,4 @@
+import { A } from "@solidjs/router";
 import { Component, createSignal } from "solid-js";
 
 interface SearchProps {
@@ -22,6 +23,29 @@ const Search: Component<SearchProps> = (props) => {
 						placeholder="Search"
 						onInput={(e: any) => setValue(e.target.value)}
 					/>
+					<div class="tooltip" data-tip="Advanced Search">
+						<A class="btn btn-ghost btn-circle" href="/search">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								class="w-5 h-5 opacity-70 lucide lucide-scan-search"
+							>
+								<path d="M3 7V5a2 2 0 0 1 2-2h2" />
+								<path d="M17 3h2a2 2 0 0 1 2 2v2" />
+								<path d="M21 17v2a2 2 0 0 1-2 2h-2" />
+								<path d="M7 21H5a2 2 0 0 1-2-2v-2" />
+								<circle cx="12" cy="12" r="3" />
+								<path d="m16 16-1.9-1.9" />
+							</svg>
+						</A>
+					</div>
 					<button class="btn btn-ghost btn-circle">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
