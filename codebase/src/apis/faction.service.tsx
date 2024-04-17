@@ -4,6 +4,7 @@ import Dropdown from "../components/ui/dropdown";
 import PlanetService from "./planet.service";
 import CharacterService from "./character.service";
 import SpeciesService from "./species.service";
+import styles from "../style.module.css";
 
 type FormData = {
 	name: string;
@@ -41,8 +42,6 @@ const [name, setName] = createSignal("");
 const [weaponCount, setWeaponCount] = createSignal("");
 const [droidCount, setDroidCount] = createSignal("");
 const [advLevel, setAdvLevel] = createSignal("");
-const [minInceptionDate, setMinInceptionDate] = createSignal("");
-const [maxInceptionDate, setMaxInceptionDate] = createSignal("");
 
 const [planet, setPlanet] = createSignal("");
 const [galaxy, setGalaxy] = createSignal("");
@@ -63,10 +62,6 @@ let filters: () => FormData = () => {
 		formData.droid_count = { op: "<=", val: droidCount() };
 	if (advLevel() !== "")
 		formData.advancement_level = { op: "=", val: advLevel() };
-	if (minInceptionDate() !== "")
-		formData.doi = { op: ">=", val: minInceptionDate() };
-	if (maxInceptionDate() !== "")
-		formData.doi = { op: "<=", val: maxInceptionDate() };
 	if (planet() !== "") formData.base_planet = { op: "=", val: planet() };
 	if (galaxy() !== "") formData.galaxy = { op: "=", val: galaxy() };
 	if (maxGravity() !== "") formData.gravity = { op: "<=", val: maxGravity() };
@@ -79,7 +74,44 @@ let filters: () => FormData = () => {
 	return formData;
 };
 
-const Options: Component<{}> = () => {
+const getData = async (filters: FormData) => {
+	if (!filters || Object.keys(filters).length === 0) return getFactions();
+
+	const table_names = ["people", "planet", "faction"];
+	const join_conditions = [
+		{
+			table1: "people",
+			col1: "name",
+			table2: "faction",
+			col2: "leader",
+		},
+		{
+			table1: "faction",
+			col1: "base_planet",
+			table2: "planet",
+			col2: "name",
+		},
+	];
+	const { data, error } = await supabase.rpc("filter_and_join", {
+		tables: table_names,
+		join_cond: join_conditions,
+		filters: filters,
+	});
+
+	if (error) {
+		console.error("Error: ", error);
+	} else {
+		console.log("Data: ", data);
+		return data;
+	}
+};
+
+interface OptionProps {
+	onSubmit: () => void;
+}
+
+const Options: Component<OptionProps> = (props) => {
+	const { onSubmit } = props;
 	return (
 		<div>
 			<div class="card w-full bg-base-200 shadow-sm">
@@ -88,6 +120,7 @@ const Options: Component<{}> = () => {
 					<div
 						class="btn btn-primary"
 						onClick={() => {
+							onSubmit();
 							console.log(filters());
 						}}
 					>
@@ -156,89 +189,45 @@ const Options: Component<{}> = () => {
 								<span>3000</span>
 							</div>
 						</div>
-						<label class="form-control w-full max-w-xs">
-							<div class="label">
-								<span class="label-text">
-									Advancement Level
-								</span>
-							</div>
-							<div class="rating center">
-								<input
-									type="radio"
-									name="rating-1"
-									class="mask mask-star"
-									onClick={(e) => setAdvLevel("Type 1")}
-								/>
-								<input
-									type="radio"
-									name="rating-1"
-									class="mask mask-star"
-									onClick={(e) => setAdvLevel("Type 2")}
-								/>
-								<input
-									type="radio"
-									name="rating-1"
-									class="mask mask-star"
-									onClick={(e) => setAdvLevel("Type 3")}
-								/>
-								<input
-									type="radio"
-									name="rating-1"
-									class="mask mask-star"
-									checked
-									onClick={(e) => setAdvLevel("Type 4")}
-								/>
-								<input
-									type="radio"
-									name="rating-1"
-									class="mask mask-star"
-									onClick={(e) => setAdvLevel("Type 5")}
-								/>
-							</div>
-						</label>
 						<div>
 							<label class="form-control w-full max-w-xs">
 								<div class="label">
 									<span class="label-text">
-										Set Inception Time Range
+										Advancement Level
 									</span>
 								</div>
-								<div class="grid grid-cols-3 gap-2">
-									<div>
-										<input
-											type="datetime-local"
-											placeholder="Min Year"
-											class="input input-bordered w-full max-w-xs"
-											onChange={(e) =>
-												setMinInceptionDate(
-													e.target.value
-												)
-											}
-										/>
-										<div class="label">
-											<span class="label-text-alt">
-												Set Minimum Date
-											</span>
-										</div>
-									</div>
-									<div class="divider"></div>
-									<div>
-										<input
-											type="datetime-local"
-											placeholder="Max Year"
-											class="input input-bordered w-full max-w-xs"
-											onChange={(e) =>
-												setMaxInceptionDate(
-													e.target.value
-												)
-											}
-										/>
-										<div class="label">
-											<span class="label-text-alt">
-												Set Maximum Date
-											</span>
-										</div>
-									</div>
+								<div class="rating center">
+									<input
+										type="radio"
+										name="rating-1"
+										class="mask mask-star"
+										onClick={(e) => setAdvLevel("Type 1")}
+									/>
+									<input
+										type="radio"
+										name="rating-1"
+										class="mask mask-star"
+										onClick={(e) => setAdvLevel("Type 2")}
+									/>
+									<input
+										type="radio"
+										name="rating-1"
+										class="mask mask-star"
+										onClick={(e) => setAdvLevel("Type 3")}
+									/>
+									<input
+										type="radio"
+										name="rating-1"
+										class="mask mask-star"
+										checked
+										onClick={(e) => setAdvLevel("Type 4")}
+									/>
+									<input
+										type="radio"
+										name="rating-1"
+										class="mask mask-star"
+										onClick={(e) => setAdvLevel("Type 5")}
+									/>
 								</div>
 							</label>
 						</div>
@@ -320,22 +309,41 @@ const Options: Component<{}> = () => {
 								</div>
 							</div>
 						</div>
-						<div class="mt-2 card w-full bg-base-300 shadow-sm">
-							<div class="card-body">
-								<h2 class="card-title">Species</h2>
-								<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-									<div>
-										<Dropdown
-											name="Species"
-											getOptions={
-												SpeciesService.getSpeciesNames
-											}
-											setOptions={setSpecies}
-										/>
-									</div>
-								</div>
-							</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+};
+
+const FactionCard: Component<{ fct: any }> = (props) => {
+	return (
+		<div>
+			<div
+				class={`z-0 card w-84 h-96 bg-base-100 shadow-xl image-full bg-contain ${styles.card}`}
+			>
+				<figure>
+					<img src={props.fct.image} alt={props.fct.name} class="" />
+				</figure>
+				<div class="card-body">
+					<h2 class="card-title font-bold text-3xl">
+						{props.fct.name}
+					</h2>
+					<code>
+						<div>Date of Inception: {props.fct.doi}</div>
+						<div>
+							Advancement Level: {props.fct.advancement_level}
 						</div>
+						<div>Droid Count: {props.fct.droid_count}</div>
+						<div>Weapon Count: {props.fct.weapon_count}</div>
+					</code>
+					<div class="card-actions justify-end mt-1">
+						<a
+							class="btn btn-primary"
+							href={`/factions/${props.fct.name}`}
+						>
+							Know More
+						</a>
 					</div>
 				</div>
 			</div>
@@ -344,27 +352,22 @@ const Options: Component<{}> = () => {
 };
 
 const getFilterDrawer: Component<{}> = () => {
-	// const [results, { refetch }] = createResource(() => getData(filters()));
+	const [results, { refetch }] = createResource(() => getData(filters()));
 
-	// const clearFilters = () => {
-	// 	setName("");
-	// 	setGender("");
-	// 	setMaxHeight("");
-	// 	setMaxWeight("");
-	// 	setBirthYearMin("");
-	// 	setBirthYearMax("");
-	// 	setPersonality("");
-	// 	setFaction("");
-	// 	setAdvLevel("");
-	// 	setMaxDroidCount("");
-	// 	setMaxWeaponCount("");
-	// 	setPlanet("");
-	// 	setGalaxy("");
-	// 	setMaxGravity("");
-	// 	setSpecies("");
-	// 	setLanguage("");
-	// 	refetch();
-	// };
+	const clearFilters = () => {
+		setName("");
+		setWeaponCount("");
+		setDroidCount("");
+		setAdvLevel("");
+		setPlanet("");
+		setGalaxy("");
+		setMaxGravity("");
+		setSpecies("");
+		setLeader("");
+		setGender("");
+		setPersonality("");
+		refetch();
+	};
 
 	return (
 		<div>
@@ -377,10 +380,10 @@ const getFilterDrawer: Component<{}> = () => {
 					>
 						Open Filters
 					</label>
-					<div class="btn mx-4 mb-2" onClick={() => {}}>
+					<div class="btn mx-4 mb-2" onClick={() => clearFilters()}>
 						Clear Filters
 					</div>
-					{/* {results() && results().length > 0 ? (
+					{results() && results().length > 0 ? (
 						<div class="text-xl mb-4">
 							Found{" "}
 							<span class="font-bold">{results()?.length}</span>{" "}
@@ -393,7 +396,7 @@ const getFilterDrawer: Component<{}> = () => {
 						results().length > 0 ? (
 							<div class="z-0 mx-3 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 								<For each={results()}>
-									{(ppl) => <PeopleCard ppl={ppl} />}
+									{(fct) => <FactionCard fct={fct} />}
 								</For>
 							</div>
 						) : (
@@ -405,7 +408,7 @@ const getFilterDrawer: Component<{}> = () => {
 						<div class="hero min-h-screen">
 							<span class="loading loading-dots loading-lg"></span>
 						</div>
-					)} */}
+					)}
 				</div>
 				<div class="drawer-side">
 					<label
@@ -414,7 +417,7 @@ const getFilterDrawer: Component<{}> = () => {
 						class="drawer-overlay z-40"
 					></label>
 					<div class="z-40">
-						<Options />
+						<Options onSubmit={refetch} />
 					</div>
 				</div>
 			</div>

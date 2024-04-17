@@ -3,7 +3,6 @@ import { supabase } from "../utils/supabase";
 import styles from "../style.module.css";
 import Search from "../components/ui/search";
 import { A } from "@solidjs/router";
-import { get } from "http";
 import FactionService from "../apis/faction.service";
 
 async function getQuery(query: string) {
