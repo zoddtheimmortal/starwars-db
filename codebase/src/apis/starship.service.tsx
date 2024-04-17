@@ -91,9 +91,37 @@ const filters: () => FormData = () => {
 
 const getData = async (filters: FormData) => {
 	if (!filters || Object.keys(filters).length === 0) return getStarships();
+
+	const table_names = ["faction", "starship"];
+	const join_conditions = [
+		{
+			table1: "starship",
+			col1: "owned_by",
+			table2: "faction",
+			col2: "name",
+		},
+	];
+
+	const { data, error } = await supabase.rpc("filter_and_join", {
+		tables: table_names,
+		join_cond: join_conditions,
+		filters: filters,
+	});
+
+	if (error) {
+		console.error("Error: ", error);
+	} else {
+		console.log("Data: ", data);
+		return data;
+	}
 };
 
-const Options: Component<{}> = () => {
+interface OptionProps {
+	onSubmit: () => void;
+}
+
+const Options: Component<OptionProps> = (props) => {
+	const { onSubmit } = props;
 	return (
 		<div>
 			<div class="card w-full bg-base-200 shadow-sm">
@@ -102,6 +130,7 @@ const Options: Component<{}> = () => {
 					<div
 						class="btn btn-primary"
 						onClick={() => {
+							onSubmit();
 							console.log(filters());
 						}}
 					>
@@ -473,7 +502,7 @@ const getFilterDrawer: Component<{}> = () => {
 						class="drawer-overlay z-40"
 					></label>
 					<div class="z-40">
-						<Options />
+						<Options onSubmit={refetch} />
 					</div>
 				</div>
 			</div>
