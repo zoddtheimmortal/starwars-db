@@ -59,6 +59,10 @@ const mandalorian_clans =
 
 const black_sun_syndicate =
 	"https://media.moddb.com/images/members/1/645/644540/profile/Blacksun.png";
+
+const default_user =
+	"https://t4.ftcdn.net/jpg/03/49/49/79/360_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.webp";
+
 const Links = {
 	people,
 	faction,
@@ -83,6 +87,7 @@ const Links = {
 	rebel_alliance,
 	mandalorian_clans,
 	black_sun_syndicate,
+	default_user,
 };
 
 export default Links;
