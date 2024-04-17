@@ -80,6 +80,11 @@ async function getCharacters() {
 	return people;
 }
 
+async function getCharacterName() {
+	let { data, error } = await supabase.from("people").select("name");
+	return data?.map((item) => item.name);
+}
+
 const getGender = async () => {
 	const { data, error } = await supabase.from("distinct_gender").select("*");
 	return data?.map((item) => item.gender);
@@ -571,6 +576,7 @@ const CharacterService = {
 	getGender,
 	getPersonality,
 	getFilterDrawer,
+	getCharacterName,
 };
 
 export default CharacterService;

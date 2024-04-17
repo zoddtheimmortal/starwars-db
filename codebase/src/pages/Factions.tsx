@@ -4,14 +4,10 @@ import styles from "../style.module.css";
 import Search from "../components/ui/search";
 import { A } from "@solidjs/router";
 import { get } from "http";
-
-async function getFactions() {
-	let { data: factions, error } = await supabase.from("faction").select();
-	return factions;
-}
+import FactionService from "../apis/faction.service";
 
 async function getQuery(query: string) {
-	if (query === "") return getFactions();
+	if (query === "") return FactionService.getFactions();
 	const { data: factions, error } = await supabase
 		.from("faction")
 		.select()

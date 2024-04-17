@@ -20,7 +20,7 @@ const handleFilterChange = (selectedOption: string) => {
 			filterOptions = CharacterService.getFilterDrawer();
 			break;
 		case "Factions":
-			filterOptions = FactionService.getOptions();
+			filterOptions = FactionService.getFilterDrawer();
 			break;
 		case "Starships":
 			filterOptions = StarshipService.getOptions();
