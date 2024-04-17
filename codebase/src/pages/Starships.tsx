@@ -3,14 +3,10 @@ import { supabase } from "../utils/supabase";
 import styles from "../style.module.css";
 import Search from "../components/ui/search";
 import { A } from "@solidjs/router";
-
-async function getStarships() {
-	let { data: starships, error } = await supabase.from("starship").select();
-	return starships;
-}
+import StarshipService from "../apis/starship.service";
 
 async function getQuery(query: string) {
-	if (query === "") return getStarships();
+	if (query === "") return StarshipService.getStarships();
 	const { data: starships, error } = await supabase
 		.from("starship")
 		.select()

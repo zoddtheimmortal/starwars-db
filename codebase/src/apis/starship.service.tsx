@@ -1,8 +1,13 @@
-import { Component, createResource, createSignal } from "solid-js";
+import { Component, For, createResource, createSignal } from "solid-js";
 import { supabase } from "../utils/supabase";
 import Dropdown from "../components/ui/dropdown";
-import PlanetService from "./planet.service";
 import FactionService from "./faction.service";
+import styles from "../style.module.css";
+
+async function getStarships() {
+	let { data: starships, error } = await supabase.from("starship").select();
+	return starships;
+}
 
 const getStarshipNames = async () => {
 	const { data, error } = await supabase.from("starship").select("name");
@@ -82,6 +87,10 @@ const filters: () => FormData = () => {
 		formData.weapon_count = { op: "<=", val: maxWeaponCount() };
 
 	return formData;
+};
+
+const getData = async (filters: FormData) => {
+	if (!filters || Object.keys(filters).length === 0) return getStarships();
 };
 
 const Options: Component<{}> = () => {
@@ -347,28 +356,74 @@ const Options: Component<{}> = () => {
 	);
 };
 
-const getFilterDrawer: Component<{}> = () => {
-	// const [results, { refetch }] = createResource(() => getData(filters()));
+const StarshipCard: Component<{ ssp: any }> = (props) => {
+	return (
+		<div>
+			<div
+				class={`card w-84 h-96 bg-base-100 shadow-xl image-full bg-contain ${styles.card}`}
+			>
+				<figure>
+					<img src={props.ssp.image} alt={props.ssp.name} class="" />
+				</figure>
+				<div class="card-body">
+					<h2 class="card-title font-bold text-3xl line-clamp-1">
+						{props.ssp.name}
+					</h2>
+					<code>
+						<div class="line-clamp-1">Price: {props.ssp.price}</div>
+						<div class="line-clamp-1">Crew: {props.ssp.crew}</div>
+						<div class="line-clamp-1">
+							Payload: {props.ssp.payload}
+						</div>
+						<div class="line-clamp-1">
+							Maximum Speed: {props.ssp.max_speed}
+						</div>
+						<div class="line-clamp-1">
+							Fuel Type: {props.ssp.fuel_type}
+						</div>
+						<div class="line-clamp-1">
+							Fuel Capacity: {props.ssp.fuel_capacity}
+						</div>
+						<div class="line-clamp-1">
+							Manufacturer: {props.ssp.manufacturer}
+						</div>
+						<div class="line-clamp-1">
+							Owned by: {props.ssp.owned_by}
+						</div>
+					</code>
+					<div class="card-actions justify-end mt-1">
+						<a
+							class="btn btn-primary"
+							href={`/starships/${props.ssp.vin}`}
+						>
+							Know More
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+};
 
-	// const clearFilters = () => {
-	// 	setName("");
-	// 	setGender("");
-	// 	setMaxHeight("");
-	// 	setMaxWeight("");
-	// 	setBirthYearMin("");
-	// 	setBirthYearMax("");
-	// 	setPersonality("");
-	// 	setFaction("");
-	// 	setAdvLevel("");
-	// 	setMaxDroidCount("");
-	// 	setMaxWeaponCount("");
-	// 	setPlanet("");
-	// 	setGalaxy("");
-	// 	setMaxGravity("");
-	// 	setSpecies("");
-	// 	setLanguage("");
-	// 	refetch();
-	// };
+const getFilterDrawer: Component<{}> = () => {
+	const [results, { refetch }] = createResource(() => getData(filters()));
+
+	const clearFilters = () => {
+		setName("");
+		setFuel("");
+		setMaxFuel("");
+		setMaxSpeed("");
+		setMinPrice("");
+		setMaxPrice("");
+		setPayload("");
+		setManufacturer("");
+		setCrew("");
+		setFaction("");
+		setAdvLevel("");
+		setMaxDroidCount("");
+		setMaxWeaponCount("");
+		refetch();
+	};
 
 	return (
 		<div>
@@ -384,7 +439,7 @@ const getFilterDrawer: Component<{}> = () => {
 					<div class="btn mx-4 mb-2" onClick={() => clearFilters()}>
 						Clear Filters
 					</div>
-					{/* {results() && results().length > 0 ? (
+					{results() && results().length > 0 ? (
 						<div class="text-xl mb-4">
 							Found{" "}
 							<span class="font-bold">{results()?.length}</span>{" "}
@@ -392,12 +447,12 @@ const getFilterDrawer: Component<{}> = () => {
 						</div>
 					) : (
 						<></>
-					)} */}
-					{/* {results() ? (
+					)}
+					{results() ? (
 						results().length > 0 ? (
 							<div class="z-0 mx-3 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 								<For each={results()}>
-									{(ppl) => <PeopleCard ppl={ppl} />}
+									{(ssp) => <StarshipCard ssp={ssp} />}
 								</For>
 							</div>
 						) : (
@@ -409,7 +464,7 @@ const getFilterDrawer: Component<{}> = () => {
 						<div class="hero min-h-screen">
 							<span class="loading loading-dots loading-lg"></span>
 						</div>
-					)} */}
+					)}
 				</div>
 				<div class="drawer-side">
 					<label
@@ -433,6 +488,7 @@ const StarshipService = {
 	getPayload,
 	getCrew,
 	getStarshipNames,
+	getStarships,
 };
 
 export default StarshipService;
