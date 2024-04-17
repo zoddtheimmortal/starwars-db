@@ -1,4 +1,4 @@
-import { Component, createResource } from "solid-js";
+import { Component, createResource, createSignal } from "solid-js";
 import { supabase } from "../utils/supabase";
 import Dropdown from "../components/ui/dropdown";
 import PlanetService from "./planet.service";
@@ -26,6 +26,61 @@ const getPayload = async () => {
 const getCrew = async () => {
 	const { data, error } = await supabase.from("distinct_crew").select("*");
 	return data?.map((item) => item.crew);
+};
+
+const [name, setName] = createSignal("");
+const [fuel, setFuel] = createSignal("");
+const [maxFuel, setMaxFuel] = createSignal("");
+const [maxSpeed, setMaxSpeed] = createSignal("");
+const [minPrice, setMinPrice] = createSignal("");
+const [maxPrice, setMaxPrice] = createSignal("");
+const [payload, setPayload] = createSignal("");
+const [manufacturer, setManufacturer] = createSignal("");
+const [crew, setCrew] = createSignal("");
+
+const [faction, setFaction] = createSignal("");
+const [advLevel, setAdvLevel] = createSignal("");
+const [maxDroidCount, setMaxDroidCount] = createSignal("");
+const [maxWeaponCount, setMaxWeaponCount] = createSignal("");
+
+type FormData = {
+	name: string;
+	fuel: string;
+	maxFuel: string;
+	maxSpeed: string;
+	minPrice: string;
+	maxPrice: string;
+	payload: string;
+	manufacturer: string;
+	crew: string;
+	faction: string;
+	advLevel: string;
+	maxDroidCount: string;
+	maxWeaponCount: string;
+};
+
+const filters: () => FormData = () => {
+	let formData: any = {};
+
+	if (name() !== "") formData.name = { op: "=", val: name() };
+	if (fuel() !== "") formData.fuel_type = { op: "=", val: fuel() };
+	if (maxFuel() !== "") formData.fuel_capacity = { op: "<=", val: maxFuel() };
+	if (maxSpeed() !== "") formData.max_speed = { op: "<=", val: maxSpeed() };
+	if (minPrice() !== "") formData.price = { op: ">=", val: minPrice() };
+	if (maxPrice() !== "") formData.price = { op: "<=", val: maxPrice() };
+	if (payload() !== "") formData.payload = { op: "=", val: payload() };
+	if (manufacturer() !== "")
+		formData.manufacturer = { op: "=", val: manufacturer() };
+	if (crew() !== "") formData.crew = { op: "=", val: crew() };
+	if (faction() !== "") formData.owned_by = { op: "=", val: faction() };
+	if (advLevel() !== "")
+		formData.advancement_level = { op: "=", val: advLevel() };
+	if (maxDroidCount() !== "")
+		formData.droid_count = { op: "<=", val: maxDroidCount() };
+	if (maxWeaponCount() !== "")
+		formData.weapon_count = { op: "<=", val: maxWeaponCount() };
+
+	return formData;
 };
 
 const Options: Component<{}> = () => {
