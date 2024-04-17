@@ -2,6 +2,7 @@ import { Component, createResource, createSignal } from "solid-js";
 import { supabase } from "../utils/supabase";
 import Dropdown from "../components/ui/dropdown";
 import PlanetService from "./planet.service";
+import FactionService from "./faction.service";
 
 const getStarshipNames = async () => {
 	const { data, error } = await supabase.from("starship").select("name");
@@ -89,6 +90,14 @@ const Options: Component<{}> = () => {
 			<div class="card w-full bg-base-200 shadow-sm">
 				<div class="card-body">
 					<h2 class="card-title">Starship Filtering Options</h2>
+					<div
+						class="btn btn-primary"
+						onClick={() => {
+							console.log(filters());
+						}}
+					>
+						Apply Filters
+					</div>
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 						<div>
 							<label class="</div>form-control w-full max-w-xs">
@@ -101,6 +110,7 @@ const Options: Component<{}> = () => {
 									type="text"
 									placeholder="Type here"
 									class="input input-bordered w-full max-w-xs"
+									onChange={(e) => setName(e.target.value)}
 								/>
 								<div class="label">
 									<span class="label-text-alt">
@@ -110,7 +120,11 @@ const Options: Component<{}> = () => {
 							</label>
 						</div>
 						<label class="</div>form-control w-full max-w-xs">
-							<Dropdown name="Fuel Type" getOptions={getFuel} />
+							<Dropdown
+								name="Fuel Type"
+								getOptions={getFuel}
+								setOptions={setFuel}
+							/>
 						</label>
 
 						<div>
@@ -125,6 +139,7 @@ const Options: Component<{}> = () => {
 								max="250"
 								value="200"
 								class="range range-sm"
+								onChange={(e) => setMaxFuel(e.target.value)}
 							/>
 							<div class="w-full flex justify-between text-xs px-2">
 								<span>10</span>
@@ -141,6 +156,7 @@ const Options: Component<{}> = () => {
 								max="200"
 								value="180"
 								class="range range-sm"
+								onChange={(e) => setMaxSpeed(e.target.value)}
 							/>
 							<div class="w-full flex justify-between text-xs px-2">
 								<span>50</span>
@@ -160,6 +176,9 @@ const Options: Component<{}> = () => {
 											type="text"
 											placeholder="Min Price"
 											class="input input-bordered w-full max-w-xs"
+											onChange={(e) =>
+												setMinPrice(e.target.value)
+											}
 										/>
 										<div class="label">
 											<span class="label-text-alt">
@@ -173,6 +192,9 @@ const Options: Component<{}> = () => {
 											type="text"
 											placeholder="Max Pricer"
 											class="input input-bordered w-full max-w-xs"
+											onChange={(e) =>
+												setMaxPrice(e.target.value)
+											}
 										/>
 										<div class="label">
 											<span class="label-text-alt">
@@ -184,6 +206,7 @@ const Options: Component<{}> = () => {
 								<Dropdown
 									name="Payload"
 									getOptions={getPayload}
+									setOptions={setPayload}
 								/>
 							</label>
 						</div>
@@ -191,10 +214,15 @@ const Options: Component<{}> = () => {
 							<Dropdown
 								name="Manufacturer"
 								getOptions={getOwner}
+								setOptions={setManufacturer}
 							/>
-							<div style="margin-top: 47px;">
-								<Dropdown name="Crew" getOptions={getCrew} />
-							</div>
+						</div>
+						<div>
+							<Dropdown
+								name="Crew"
+								getOptions={getCrew}
+								setOptions={setCrew}
+							/>
 						</div>
 					</div>
 					<div>
@@ -203,18 +231,13 @@ const Options: Component<{}> = () => {
 								<h2 class="card-title">Faction</h2>
 								<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 									<div>
-										<label class="form-control w-full max-w-xs">
-											<div class="label">
-												<span class="label-text">
-													Filter With Owner Faction
-												</span>
-											</div>
-											<input
-												type="text"
-												placeholder="Faction Name"
-												class="input input-bordered w-full max-w-xs"
-											/>
-										</label>
+										<Dropdown
+											name="Faction"
+											getOptions={
+												FactionService.getFactionNames
+											}
+											setOptions={setFaction}
+										/>
 									</div>
 									<div>
 										<label class="form-control w-full max-w-xs">
@@ -228,27 +251,42 @@ const Options: Component<{}> = () => {
 													type="radio"
 													name="rating-1"
 													class="mask mask-star"
+													onClick={(e) =>
+														setAdvLevel("Type 1")
+													}
 												/>
 												<input
 													type="radio"
 													name="rating-1"
 													class="mask mask-star"
+													onClick={(e) =>
+														setAdvLevel("Type 2")
+													}
 												/>
 												<input
 													type="radio"
 													name="rating-1"
 													class="mask mask-star"
+													onClick={(e) =>
+														setAdvLevel("Type 3")
+													}
 												/>
 												<input
 													type="radio"
 													name="rating-1"
 													class="mask mask-star"
 													checked
+													onClick={(e) =>
+														setAdvLevel("Type 4")
+													}
 												/>
 												<input
 													type="radio"
 													name="rating-1"
 													class="mask mask-star"
+													onClick={(e) =>
+														setAdvLevel("Type 5")
+													}
 												/>
 											</div>
 										</label>
@@ -266,6 +304,9 @@ const Options: Component<{}> = () => {
 											value="2000"
 											class="range range-sm"
 											step="250"
+											onChange={(e) =>
+												setMaxDroidCount(e.target.value)
+											}
 										/>
 										<div class="w-full flex justify-between text-xs px-2">
 											<span>0</span>
@@ -285,6 +326,11 @@ const Options: Component<{}> = () => {
 											value="1800"
 											class="range range-sm"
 											step="250"
+											onChange={(e) =>
+												setMaxWeaponCount(
+													e.target.value
+												)
+											}
 										/>
 										<div class="w-full flex justify-between text-xs px-2">
 											<span>0</span>

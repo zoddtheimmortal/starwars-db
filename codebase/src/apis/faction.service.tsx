@@ -22,7 +22,6 @@ type FormData = {
 
 const getFactionNames = async () => {
 	const { data, error } = await supabase.from("faction").select("name");
-	console.log(data);
 	return data?.map((item) => item.name);
 };
 
