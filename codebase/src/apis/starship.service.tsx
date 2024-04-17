@@ -111,7 +111,6 @@ const getData = async (filters: FormData) => {
 	if (error) {
 		console.error("Error: ", error);
 	} else {
-		console.log("Data: ", data);
 		return data;
 	}
 };

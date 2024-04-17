@@ -133,7 +133,6 @@ const getData = async (filters: any) => {
 	if (error) {
 		console.error("Error: ", error);
 	} else {
-		console.log("Data: ", data);
 		return data;
 	}
 };
